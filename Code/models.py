@@ -19,10 +19,10 @@ from keras.layers import Dense
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.decomposition import PCA
 from sklearn.metrics import make_scorer
-from sklearn.feature_selection import SelectKBest, f_regression, RFE
+from sklearn.feature_selection import RFE
 from sklearn.model_selection import cross_val_score, GridSearchCV
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
-from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import RobustScaler, StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn import svm, linear_model
@@ -31,7 +31,7 @@ from os import system
 from data_utils import TrainTestSplit
 
 RANDOM_STATE = 0
-SAVE_ROOT = '../Visualizations/'
+SAVE_ROOT = '../Visualizations'
 
 CLASS_CUTOFF = 1400
 
@@ -98,11 +98,11 @@ def DecisionTree(X, Y, save=True):
 	results = cross_val_score(estimator.best_estimator_, X.values, Y.values.ravel(), scoring='accuracy', cv=kfold)
 	print("Decision Tree Accuracy: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
 	if save:
-		with open("tree.dot", "w") as f:
+		with open("{0}/tree.dot".format(SAVE_ROOT), "w") as f:
 			f = export_graphviz(estimator.best_estimator_, out_file=f, feature_names=list(X),
 				filled=True, rounded=True, special_characters=True)
-		system('dot -Tpng tree.dot -o tree.png')
-		system('open tree.png')
+		system('dot -Tpng {0}/tree.dot -o {0}/tree.png'.format(SAVE_ROOT))
+		system('open {0}/tree.png'.format(SAVE_ROOT))
 
 def SVM(X, Y):
 	"""SVM classifier."""
