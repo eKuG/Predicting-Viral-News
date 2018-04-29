@@ -1,0 +1,50 @@
+,mean_fit_time,mean_score_time,mean_test_score,mean_train_score,param_pca,param_scale,params,rank_test_score,split0_test_score,split0_train_score,split1_test_score,split1_train_score,split2_test_score,split2_train_score,std_fit_time,std_score_time,std_test_score,std_train_score
+0,0.829567352931,0.109953006109,1.0,1.0,,,"{'pca': None, 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0229556462489,0.0017685137593,0.0,0.0
+1,0.378491004308,0.137931664785,1.0,1.0,,"StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': None, 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.260428462229,0.0112316350905,0.0,0.0
+2,0.310301621755,0.136882066727,1.0,1.0,,"RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': None, 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0568323566374,0.0397868140865,0.0,0.0
+3,0.497490406036,0.128009955088,1.0,1.0,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)",,"{'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0660796883482,0.0137865084639,0.0,0.0
+4,0.504857063293,0.124605019887,1.0,1.0,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0537679229529,0.0103897319438,0.0,0.0
+5,0.561606725057,0.125117937724,1.0,1.0,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0781882339089,0.015020647289,0.0,0.0
+6,0.639379660288,0.124942302704,1.0,1.0,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)",,"{'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0324211055911,0.0111608195435,0.0,0.0
+7,0.82103673617,0.137281020482,1.0,1.0,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0570510598595,0.00846106566028,0.0,0.0
+8,0.862969636917,0.12562696139,1.0,1.0,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.13728513875,0.0098367821917,0.0,0.0
+9,3.69992836316,0.0943766434987,1.0,1.0,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=None, step=1, verbose=0)",,"{'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=None, step=1, verbose=0), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.127256272649,0.00234848234045,0.0,0.0
+10,3.59943826993,0.126959005992,1.0,1.0,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=None, step=1, verbose=0)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=None, step=1, verbose=0), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.123926925712,0.0069171423262,0.0,0.0
+11,4.03999241193,0.123819351196,1.0,1.0,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=None, step=1, verbose=0)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=None, step=1, verbose=0), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0116999403044,0.0126621475212,0.0,0.0
+12,4.47696765264,0.151193062464,1.0,1.0,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=10, step=1, verbose=0)",,"{'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=10, step=1, verbose=0), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.254289107467,0.0250303618132,0.0,0.0
+13,5.74425029755,0.141601959864,1.0,1.0,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=10, step=1, verbose=0)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=10, step=1, verbose=0), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.691364958993,0.00364905641468,0.0,0.0
+14,4.79821594556,0.118885596593,1.0,1.0,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=10, step=1, verbose=0)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
+  n_features_to_select=10, step=1, verbose=0), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,1.63218387191,0.0320523451628,0.0,0.0
