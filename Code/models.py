@@ -17,9 +17,12 @@ import pandas
 import pickle
 import dill
 import warnings
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.wrappers.scikit_learn import KerasClassifier
+try:
+	from keras.models import Sequential
+	from keras.layers import Dense
+	from keras.wrappers.scikit_learn import KerasClassifier
+except Exception as e:
+	print('Keras import failed.')
 from sklearn.decomposition import PCA
 from sklearn.metrics import make_scorer
 from sklearn.feature_selection import RFE
