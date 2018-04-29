@@ -1,4 +1,4 @@
-# Predicting-Viral-News :fire:
+# :fire: Predicting-Viral-News :fire:
 
 Investigation in `Python` of predicting the virality of a news article based on its meta-data. Uses the [UCI dataset](https://archive.ics.uci.edu/ml/datasets/online+news+popularity) from the paper below.
 
@@ -17,15 +17,13 @@ You can install the requirements via:
 
 `pip install -r requirements.txt`
 
-For faster training of the Neural Net, I recommend using a GPU. Create a new `Anaconda`:star: environment and install all the requirements _except_ for Keras. Then run: 
+For faster training of the Neural Net, I recommend using a GPU. Create a new `Anaconda` environment and install all the requirements _except_ for Keras. Then run: 
 
 `conda install -c anaconda keras-gpu`
 
-:star:If you need help getting started with `Anaconda`:
+If you need help getting started with `Anaconda`: [Getting Started With Anaconda](https://conda.io/docs/user-guide/getting-started.html)
 
-[Getting Started With Anaconda](https://conda.io/docs/user-guide/getting-started.html)
-
-#### Run :running: ...
+#### Run :running:
 
 To run the best parameters simply run:
 
