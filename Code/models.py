@@ -142,7 +142,7 @@ def DecisionTree(X, Y, grid, save=True):
 			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
 				    PCA(40, whiten=True), RFE(mDT), RFE(mDT, 20)],
 			'model__criterion': ['gini', 'entropy'],
-			'model__max_depth': [None, 3, 5, 10]
+			'model__max_depth': [None, 3, 5, 7, 10]
 	}
 	# define grid search and fit the values
 	estimator = GridSearchCVProgressBar(pipe, grid, scoring='accuracy', n_jobs=-1, verbose=1)
@@ -158,11 +158,12 @@ def DecisionTree(X, Y, grid, save=True):
 	print("Decision Tree Best Results: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
 	if save:
 		try:
-			with open("{0}/tree.dot".format(VIS_ROOT), "w") as f:
+			with open("tree.dot", "w") as f:
 				f = export_graphviz(estimator.best_estimator_, out_file=f, feature_names=list(X),
 					filled=True, rounded=True, special_characters=True)
-			system('dot -Tpng {0}/tree.dot -o {0}/tree.png'.format(VIS_ROOT))
-			system('open {0}/tree.png'.format(VIS_ROOT))
+			system('dot -Tpng tree.dot -o tree.png')
+			system('mv tree.png {0}'.format(VIS_ROOT))
+			system('mv tree.dot {0}'.format(VIS_ROOT))
 		except Exception as e:
 			print e
 	print(DIVIDER)
@@ -183,8 +184,7 @@ def SVM(X, Y, grid):
 					memory=cachedir)
 	# grid search parameters
 	grid = {'scale': [None, StandardScaler(), RobustScaler()],
-			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
-				    PCA(40, whiten=True), RFE(mSVM), RFE(mSVM, 20)],
+			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True), PCA(40, whiten=True)],
 			'model__kernel': ['rbf', 'linear', 'poly', 'sigmoid'],
 			'model__C': numpy.logspace(-4, 4, 5),
 			'model__gamma': numpy.logspace(-4, 4, 5)

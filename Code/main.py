@@ -19,17 +19,20 @@ def main(grid):
 	Y_binary = BinaryY(Y)
 	# Linear Regression
 	try:
-		LinearRegression(X, Y, grid)
+		pass
+		#LinearRegression(X, Y, grid)
 	except Exception as e:
 		print e
 	# Logistic Regression
 	try:
-		LogisticRegression(X, Y_binary, grid)
+		pass
+		#LogisticRegression(X, Y_binary, grid)
 	except Exception as e:
 		print e
 	# Decision Tree
 	try:
-		DecisionTree(X, Y_binary, grid)
+		pass
+		#DecisionTree(X, Y_binary, grid)
 	except Exception as e:
 		print e
 	# Support Vector Machine
