@@ -12,11 +12,12 @@ Assignment: Final Project
 Class: Data Mining | CSC 440
 Programmer: Gregory D. Hunkins 
 """
+import warnings
+warnings.warn = lambda *args, **kwargs: None
 import numpy
 import pandas
 import pickle
 import dill
-import warnings
 try:
 	from keras.models import Sequential
 	from keras.layers import Dense
@@ -32,11 +33,12 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import RobustScaler, StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn import svm, linear_model
+from pactools.grid_search import GridSearchCVProgressBar
+from tempfile import mkdtemp
+from shutil import rmtree
 from os import system
 
 from data_utils import TrainTestSplit
-
-warnings.warn = lambda *args, **kwargs: None
 
 RANDOM_STATE = 0
 VIS_ROOT = '../Visualizations'
@@ -45,120 +47,165 @@ DIVIDER = '================================================='
 
 CLASS_CUTOFF = 1400
 
-def LinearRegression(X, Y):
+def LinearRegression(X, Y, grid):
 	"""Linear regression classifier."""
 	print(DIVIDER)
+	# custom score function to turn regression into classification
 	classify = lambda x: x >= CLASS_CUTOFF
 	score = lambda x, y: sum([classify(_x) == classify(y[i]) for i, _x in enumerate(x)]) / float(len(x))
+	# use pickle for parallel jobs
 	pickled_score = pickle.dumps(score)
 	score = pickle.loads(pickled_score)
-
 	linear_score = make_scorer(score, greater_is_better=True)
 
+	# define model
 	mLinear = linear_model.LinearRegression()
-
+	# create cache
+	cachedir = mkdtemp()
+	# set-up pipeline: normalize, reduce components, model
 	pipe = Pipeline(steps=[('scale', None),
 						   ('pca', None),
-						   ('model', mLinear)])
+						   ('model', mLinear)],
+					memory=cachedir)
+	# grid search parameters
 	grid = {'scale': [None, StandardScaler(), RobustScaler()],
-			'pca': [None, PCA(20), PCA(40), RFE(mLinear), RFE(mLinear, 10)]
+			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
+				    PCA(40, whiten=True), RFE(mLinear), RFE(mLinear, 20)],
+			'model__normalize': [False, True]
 	}
-	estimator = GridSearchCV(pipe, grid, scoring=linear_score, n_jobs=-1)
+	# define grid search and fit the values
+	estimator = GridSearchCVProgressBar(pipe, grid, scoring=linear_score, n_jobs=-1, verbose=1)
 	estimator.fit(X.values, Y.values.ravel())
+	# store the results of grid search in CSV
 	best_df = pandas.DataFrame.from_dict(estimator.cv_results_)
 	best_df.to_csv('{0}/linear_regression.csv'.format(CSV_ROOT))
-	means = 100*estimator.cv_results_['mean_test_score']
-	stds = 100*estimator.cv_results_['std_test_score']
+	# prepare variables for printing
+	means = 100 * estimator.cv_results_['mean_test_score']
+	stds = 100 * estimator.cv_results_['std_test_score']
 	params = estimator.cv_results_['params']
 	i = estimator.best_index_
-	print("Linear Regression: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
-	for mean, stdev, param in zip(means, stds, params):
-	    print("%.2f%% (%.2f%%) with: %r" % (mean, stdev, param))
+	# print best and loop through all grid results
+	print("Linear Regression Best Results: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
 	print(DIVIDER)
+	# remove cache
+	rmtree(cachedir)
 
-def LogisticRegression(X, Y):
+def LogisticRegression(X, Y, grid):
 	"""Logistic regression classifier."""
 	print(DIVIDER)
+	# define model
 	mLogistic = linear_model.LogisticRegression(solver='saga', n_jobs=-1)
+	# create cache
+	cachedir = mkdtemp()
+	# set-up pipeline: normalize, reduce components, model
 	pipe = Pipeline(steps=[('scale', None),
 						   ('pca', None),
-						   ('model', mLogistic)])
+						   ('model', mLogistic)],
+					memory=cachedir)
+	# grid search parameters
 	grid = {'scale': [None, StandardScaler(), RobustScaler()],
-			'pca': [None, PCA(20), PCA(40), RFE(mLogistic), RFE(mLogistic, 10)],
-			'model__C': numpy.logspace(-4, 4, 5),
+			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
+				    PCA(40, whiten=True), RFE(mLogistic), RFE(mLogistic, 20)],
+			'model__C': numpy.logspace(-4, 4, 10),
 			'model__penalty': ['l1', 'l2']
 	}
-	estimator = GridSearchCV(pipe, grid, scoring='accuracy', n_jobs=-1)
+	# define grid search and fit the values
+	estimator = GridSearchCVProgressBar(pipe, grid, scoring='accuracy', n_jobs=-1, verbose=1)
 	estimator.fit(X.values, Y.values.ravel())
+	# store the results of grid search in CSV
 	best_df = pandas.DataFrame.from_dict(estimator.cv_results_)
 	best_df.to_csv('{0}/logistic_regression.csv'.format(CSV_ROOT))
-	means = 100*estimator.cv_results_['mean_test_score']
-	stds = 100*estimator.cv_results_['std_test_score']
+	# prepare variables for printing
+	means = 100 * estimator.cv_results_['mean_test_score']
+	stds = 100 * estimator.cv_results_['std_test_score']
 	params = estimator.cv_results_['params']
 	i = estimator.best_index_
-	print("Logistic Regression: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
-	for mean, stdev, param in zip(means, stds, params):
-	    print("%.2f%% (%.2f%%) with: %r" % (mean, stdev, param))
+	print("Logistic Regression Best Results: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
 	print(DIVIDER)
+	# remove cache
+	rmtree(cachedir)
 
-def DecisionTree(X, Y, save=True):
+def DecisionTree(X, Y, grid, save=True):
 	"""Decision Tree classifier."""
 	print(DIVIDER)
+	# define model
 	mDT = DecisionTreeClassifier(random_state=RANDOM_STATE)
+	# create cache
+	cachedir = mkdtemp()
+	# set-up pipeline: normalize, reduce components, model
 	pipe = Pipeline(steps=[('scale', None),
 						   ('pca', None),
-						   ('model', mDT)])
+						   ('model', mDT)],
+					memory=cachedir)
+	# grid search parameters
 	grid = {'scale': [None, StandardScaler(), RobustScaler()],
-			'pca': [None, PCA(20), PCA(40), RFE(mDT), RFE(mDT, 10)],
+			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
+				    PCA(40, whiten=True), RFE(mDT), RFE(mDT, 20)],
 			'model__criterion': ['gini', 'entropy'],
 			'model__max_depth': [None, 3, 5, 10]
 	}
-	estimator = GridSearchCV(pipe, grid, scoring='accuracy', n_jobs=-1)
+	# define grid search and fit the values
+	estimator = GridSearchCVProgressBar(pipe, grid, scoring='accuracy', n_jobs=-1, verbose=1)
 	estimator.fit(X.values, Y.values.ravel())
+	# store the results of grid search in CSV
 	best_df = pandas.DataFrame.from_dict(estimator.cv_results_)
 	best_df.to_csv('{0}/decision_tree.csv'.format(CSV_ROOT))
-	means = 100*estimator.cv_results_['mean_test_score']
-	stds = 100*estimator.cv_results_['std_test_score']
+	# prepare variables for printing
+	means = 100 * estimator.cv_results_['mean_test_score']
+	stds = 100 * estimator.cv_results_['std_test_score']
 	params = estimator.cv_results_['params']
 	i = estimator.best_index_
-	print("Decision Tree: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
-	for mean, stdev, param in zip(means, stds, params):
-	    print("%.2f%% (%.2f%%) with: %r" % (mean, stdev, param))
+	print("Decision Tree Best Results: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
 	if save:
-		with open("{0}/tree.dot".format(VIS_ROOT), "w") as f:
-			f = export_graphviz(estimator.best_estimator_, out_file=f, feature_names=list(X),
-				filled=True, rounded=True, special_characters=True)
-		system('dot -Tpng {0}/tree.dot -o {0}/tree.png'.format(VIS_ROOT))
-		system('open {0}/tree.png'.format(VIS_ROOT))
+		try:
+			with open("{0}/tree.dot".format(VIS_ROOT), "w") as f:
+				f = export_graphviz(estimator.best_estimator_, out_file=f, feature_names=list(X),
+					filled=True, rounded=True, special_characters=True)
+			system('dot -Tpng {0}/tree.dot -o {0}/tree.png'.format(VIS_ROOT))
+			system('open {0}/tree.png'.format(VIS_ROOT))
+		except Exception as e:
+			print e
 	print(DIVIDER)
+	# remove cache
+	rmtree(cachedir)
 
-def SVM(X, Y):
+def SVM(X, Y, grid):
 	"""SVM classifier."""
 	print(DIVIDER)
+	# define model
 	mSVM = svm.SVC(random_state=RANDOM_STATE)
+	# create cache
+	cachedir = mkdtemp()
+	# set-up pipeline: normalize, reduce components, model
 	pipe = Pipeline(steps=[('scale', None),
 						   ('pca', None),
-						   ('model', mSVM)])
+						   ('model', mSVM)],
+					memory=cachedir)
+	# grid search parameters
 	grid = {'scale': [None, StandardScaler(), RobustScaler()],
-			'pca': [None, PCA(20), PCA(40), RFE(mSVM)],
-			'model__kernel': ['rbf', 'entropy'],
+			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
+				    PCA(40, whiten=True), RFE(mSVM), RFE(mSVM, 20)],
+			'model__kernel': ['rbf', 'linear', 'poly', 'sigmoid'],
 			'model__C': numpy.logspace(-4, 4, 5),
 			'model__gamma': numpy.logspace(-4, 4, 5)
 	}
-	estimator = GridSearchCV(pipe, grid, scoring='accuracy', n_jobs=-1)
+	# define grid search and fit the values
+	estimator = GridSearchCVProgressBar(pipe, grid, scoring='accuracy', n_jobs=-1, verbose=1)
 	estimator.fit(X.values, Y.values.ravel())
+	# store the results of grid search in CSV
 	best_df = pandas.DataFrame.from_dict(estimator.cv_results_)
 	best_df.to_csv('{0}/svm.csv'.format(CSV_ROOT))
-	means = 100*estimator.cv_results_['mean_test_score']
-	stds = 100*estimator.cv_results_['std_test_score']
+	# prepare variables for printing
+	means = 100 * estimator.cv_results_['mean_test_score']
+	stds = 100 * estimator.cv_results_['std_test_score']
 	params = estimator.cv_results_['params']
 	i = estimator.best_index_
-	print("SVM: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
-	for mean, stdev, param in zip(means, stds, params):
-	    print("%.2f%% (%.2f%%) with: %r" % (mean, stdev, param))
+	print("SVM Best Results: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
 	print(DIVIDER)
+	# remove cache
+	rmtree(cachedir)
 
-def NeuralNet(X, Y):
+def NeuralNet(X, Y, grid):
 	"""Neural Network baseline."""
 	numpy.random.seed(RANDOM_STATE)
 
