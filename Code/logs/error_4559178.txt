@@ -1,0 +1,10 @@
+[ParallelProgressBar(n_jobs=-1)]: Done 126 out of 126 | elapsed:  3.3min finished
+[ParallelProgressBar(n_jobs=-1)]: Done 128 tasks      | elapsed:  2.6min
+[ParallelProgressBar(n_jobs=-1)]: Done 378 tasks      | elapsed:  6.0min
+[ParallelProgressBar(n_jobs=-1)]: Done 728 tasks      | elapsed:  7.7min
+[ParallelProgressBar(n_jobs=-1)]: Done 1178 tasks      | elapsed:  9.5min
+[ParallelProgressBar(n_jobs=-1)]: Done 1260 out of 1260 | elapsed: 10.0min finished
+[ParallelProgressBar(n_jobs=-1)]: Done 128 tasks      | elapsed:  1.4min
+[ParallelProgressBar(n_jobs=-1)]: Done 378 tasks      | elapsed:  2.4min
+[ParallelProgressBar(n_jobs=-1)]: Done 630 out of 630 | elapsed:  3.2min finished
+[ParallelProgressBar(n_jobs=-1)]: Done 128 tasks      | elapsed: 31.0min
