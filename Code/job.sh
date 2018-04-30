@@ -3,7 +3,7 @@
 #SBATCH -N 2
 #SBATCH --ntasks-per-node=24
 #SBATCH --mem=48gb
-#SBATCH -t 0-8:00:00
+#SBATCH -t 2-0:00:00
 #SBATCH --job-name=VIRAL
 #SBATCH --output=output_%j.txt
 #SBATCH -e error_%j.txt
