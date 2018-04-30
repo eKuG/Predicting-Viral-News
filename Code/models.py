@@ -210,25 +210,25 @@ def NeuralNet(X, Y, grid):
 
 	numpy.random.seed(RANDOM_STATE)
 
-	def NN1():
+	def NN1(optimizer='adam', init='normal'):
 		"""Baseline. Retain dimensionality."""
 		# create model
 		model = Sequential()
-		model.add(Dense(58, input_dim=58, kernel_initializer='normal', activation='relu'))
-		model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+		model.add(Dense(58, input_dim=58, kernel_initializer=init, activation='relu'))
+		model.add(Dense(1, kernel_initializer=init, activation='sigmoid'))
 		# Compile model
-		model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+		model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 		return model
 
-	def NN2():
+	def NN2(optimizer='adam', init='normal'):
 		"""Reduction. Retain dimensionality then reduce dimensionality."""
 		# create model
 		model = Sequential()
-		model.add(Dense(58, input_dim=58, kernel_initializer='normal', activation='relu'))
-		model.add(Dense(20, input_dim=58, kernel_initializer='normal', activation='relu'))
-		model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+		model.add(Dense(58, input_dim=58, kernel_initializer=init, activation='relu'))
+		model.add(Dense(20, input_dim=58, kernel_initializer=init, activation='relu'))
+		model.add(Dense(1, kernel_initializer=init, activation='sigmoid'))
 		# Compile model
-		model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+		model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 		return model
 
 	NN1_model = KerasClassifier(build_fn=NN1, verbose=0)
