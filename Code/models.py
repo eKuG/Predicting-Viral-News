@@ -18,12 +18,6 @@ import numpy
 import pandas
 import pickle
 import dill
-try:
-	from keras.models import Sequential
-	from keras.layers import Dense
-	from keras.wrappers.scikit_learn import KerasClassifier
-except Exception as e:
-	print('Keras import failed.')
 from sklearn.decomposition import PCA
 from sklearn.metrics import make_scorer
 from sklearn.feature_selection import RFE
@@ -207,6 +201,13 @@ def SVM(X, Y, grid):
 
 def NeuralNet(X, Y, grid):
 	"""Neural Network baseline."""
+	try:
+		from keras.models import Sequential
+		from keras.layers import Dense
+		from keras.wrappers.scikit_learn import KerasClassifier
+	except Exception:
+		print('Keras import failed.')
+
 	numpy.random.seed(RANDOM_STATE)
 
 	def NN1():
