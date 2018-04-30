@@ -231,8 +231,36 @@ def NeuralNet(X, Y, grid):
 		model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 		return model
 
+	NN1_model = KerasClassifier(build_fn=NN1, verbose=0)
+	NN2_model = KerasClassifier(build_fn=NN2, verbose=0)
+	# grid search parameters
+	grid = {'optimizer': ['rmsprop', 'adam'],
+			'epochs': [50, 100, 150],
+			'batch_size': [5, 10, 20],
+			'init': ['glorot_uniform', 'normal', 'uniform']
+	}
+	# define grid search and fit the values
+	estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=1)
+	estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=1)
+	estimator_NN1.fit(X.values, Y.values.ravel())
+	estimator_NN2.fit(X.values, Y.values.ravel())
+	# store the results of grid search in CSV
+	best_df_NN1 = pandas.DataFrame.from_dict(estimator_NN1.cv_results_)
+	best_df_NN2 = pandas.DataFrame.from_dict(estimator_NN2.cv_results_)
+	best_df_NN1.to_csv('{0}/NN1.csv'.format(CSV_ROOT))
+	best_df_NN2.to_csv('{0}/NN2.csv'.format(CSV_ROOT))
+	# prepare variables for printing --> NN1
+	means_NN1 = 100 * estimator_NN1.cv_results_['mean_test_score']
+	stds_NN1 = 100 * estimator_NN1.cv_results_['std_test_score']
+	params_NN1 = estimator_NN1.cv_results_['params']
+	i_NN1 = estimator_NN1.best_index_
+	print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (means_NN1[i_NN1], stds_NN1[i_NN1], params_NN1[i_NN1]))
+	# prepare variables for printing --> NN2
+	means_NN2 = 100 * estimator_NN2.cv_results_['mean_test_score']
+	stds_NN2 = 100 * estimator_NN2.cv_results_['std_test_score']
+	params_NN2 = estimator_NN2.cv_results_['params']
+	i_NN2 = estimator_NN2.best_index_
+	print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (means_NN2[i_NN2], stds_NN2[i_NN2], params_NN2[i_NN2]))
+	print(DIVIDER)
 
-	pipeline = KerasClassifier(build_fn=NN1, epochs=10, batch_size=5, verbose=2)
-	kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=RANDOM_STATE)
-	results = cross_val_score(pipeline, X.values, Y.values, cv=kfold, scoring='accuracy', verbose=2)
-	print("NeuralNet Accuracy: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
+
