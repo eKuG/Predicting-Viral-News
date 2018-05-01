@@ -16,12 +16,12 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 def main(grid):
 	# Get Clean Data
 	X, Y = read_clean_data()
-	Y_binary = BinaryY(Y)
 	# Linear Regression
 	try:
 		LinearRegression(X, Y, grid)
 	except Exception as e:
 		print e
+	Y_binary = BinaryY(Y)
 	# Logistic Regression
 	try:
 		LogisticRegression(X, Y_binary, grid)

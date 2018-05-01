@@ -47,9 +47,6 @@ def LinearRegression(X, Y, grid):
 	# custom score function to turn regression into classification
 	classify = lambda x: x >= CLASS_CUTOFF
 	score = lambda x, y: sum([classify(_x) == classify(y[i]) for i, _x in enumerate(x)]) / float(len(x))
-	# use pickle for parallel jobs
-	pickled_score = pickle.dumps(score)
-	score = pickle.loads(pickled_score)
 	linear_score = make_scorer(score, greater_is_better=True)
 
 	# define model
@@ -63,12 +60,11 @@ def LinearRegression(X, Y, grid):
 					memory=cachedir)
 	# grid search parameters
 	grid = {'scale': [None, StandardScaler(), RobustScaler()],
-			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
-				    PCA(40, whiten=True), RFE(mLinear), RFE(mLinear, 20)],
+			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True), PCA(40, whiten=True)],
 			'model__normalize': [False, True]
 	}
 	# define grid search and fit the values
-	estimator = GridSearchCVProgressBar(pipe, grid, scoring=linear_score, n_jobs=-1, verbose=1)
+	estimator = GridSearchCVProgressBar(pipe, grid, scoring=linear_score, n_jobs=1, verbose=2)
 	estimator.fit(X.values, Y.values.ravel())
 	# store the results of grid search in CSV
 	best_df = pandas.DataFrame.from_dict(estimator.cv_results_)
@@ -239,14 +235,17 @@ def NeuralNet(X, Y, grid):
 			'batch_size': [5, 10, 20],
 			'init': ['glorot_uniform', 'normal', 'uniform']
 	}
+	grid = {'optimizer': ['adam'],
+			'init': ['normal']
+	}
 	# define grid search and fit the values
-	estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=1)
-	estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=1)
+	estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=2)
+	estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=2)
 	estimator_NN1.fit(X.values, Y.values.ravel())
-	estimator_NN2.fit(X.values, Y.values.ravel())
-	# store the results of grid search in CSV
 	best_df_NN1 = pandas.DataFrame.from_dict(estimator_NN1.cv_results_)
+	estimator_NN2.fit(X.values, Y.values.ravel())
 	best_df_NN2 = pandas.DataFrame.from_dict(estimator_NN2.cv_results_)
+	# store the results of grid search in CSV
 	best_df_NN1.to_csv('{0}/NN1.csv'.format(CSV_ROOT))
 	best_df_NN2.to_csv('{0}/NN2.csv'.format(CSV_ROOT))
 	# prepare variables for printing --> NN1

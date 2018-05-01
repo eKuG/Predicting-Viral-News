@@ -1,0 +1,29 @@
+,mean_fit_time,mean_score_time,mean_test_score,mean_train_score,param_pca,param_scale,params,rank_test_score,split0_test_score,split0_train_score,split1_test_score,split1_train_score,split2_test_score,split2_train_score,std_fit_time,std_score_time,std_test_score,std_train_score
+1,106.5191857,26.21364864,0.642997679,0.710611982,,"StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': None, 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,0.600635593,0.712009989,0.664371122,0.708664397,0.663992735,0.711161559,5.634507031,0.207797247,0.029957183,0.001420041
+7,89.43797127,21.10006205,0.638078902,0.720891038,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",2,0.589664044,0.72521568,0.661798093,0.718047673,0.662781898,0.719409762,1.48476247,1.436761723,0.034239421,0.003108131
+0,140.4210227,27.54195229,0.636565432,0.735142725,,"RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': None, 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",3,0.59246368,0.733313153,0.652262752,0.734317064,0.66497654,0.737797957,5.961447121,1.380623406,0.031615948,0.001921745
+5,123.7637986,24.98365672,0.636010493,0.727878076,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",4,0.590118039,0.726313001,0.658392614,0.724706773,0.659527774,0.732614453,13.98475175,3.321041434,0.03245663,0.003412716
+3,67.13763269,13.25709136,0.632781758,0.717359356,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",5,0.589134383,0.711669442,0.654608748,0.714755959,0.654608748,0.725652667,2.532982807,0.475806918,0.03086569,0.005998106
+6,100.3304827,22.73656233,0.630713349,0.725141279,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",6,0.587772397,0.726010292,0.646738308,0.726447219,0.657635841,0.722966326,8.817759069,2.124119393,0.03069029,0.001548234
+4,175.1074066,26.90077003,0.630007063,0.756268216,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",7,0.587394068,0.753405479,0.646889662,0.755240257,0.655743908,0.76015891,6.652807329,3.74135464,0.030350234,0.002851284
+2,86.64140097,12.46257472,0.619942488,0.75546094,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",8,0.582097458,0.748978356,0.632586651,0.762656073,0.645149084,0.754748392,3.540760018,1.489924243,0.027249453,0.00560659

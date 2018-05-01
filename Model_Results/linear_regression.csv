@@ -1,143 +1,99 @@
 ,mean_fit_time,mean_score_time,mean_test_score,mean_train_score,param_model__normalize,param_pca,param_scale,params,rank_test_score,split0_test_score,split0_train_score,split1_test_score,split1_train_score,split2_test_score,split2_train_score,std_fit_time,std_score_time,std_test_score,std_train_score
-0,0.774226983388,0.0994957288106,1.0,1.0,False,,,"{'model__normalize': False, 'pca': None, 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.00811850913057,0.00370031005972,0.0,0.0
-1,0.559107621511,0.14155960083,1.0,1.0,False,,"StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': None, 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.263095195879,0.0217705418717,0.0,0.0
-2,0.548213322957,0.139180024465,1.0,1.0,False,,"RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+15,0.259548028,0.116233985,0.563212592,0.56630246,TRUE,,,"{'model__normalize': True, 'pca': None, 'scale': None}",1,0.570563753,0.568882667,0.581990163,0.553142381,0.537081883,0.576882331,0.052338254,0.006984665,0.019056289,0.009862028
+16,0.490319252,0.123360793,0.563187368,0.56640336,TRUE,,"StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': None, 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",2,0.570639425,0.569223202,0.581914491,0.553180219,0.537006206,0.576806659,0.039219437,0.00209535,0.019075877,0.009849393
+0,0.63596638,0.101209641,0.56308647,0.565936716,FALSE,,,"{'model__normalize': False, 'pca': None, 'scale': None}",3,0.570639425,0.568958341,0.581990163,0.553218056,0.536627819,0.57563375,0.460284968,0.004579868,0.019273748,0.009397287
+2,0.722978751,0.10303998,0.563010796,0.565861041,FALSE,,"RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
        with_scaling=True)","{'model__normalize': False, 'pca': None, 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0205337554854,0.0209058554945,0.0,0.0
-3,0.529283920924,0.132074038188,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)",,"{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0567474538167,0.011413040217,0.0,0.0
-4,0.568415403366,0.131861686707,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0327989052676,0.00653710089955,0.0,0.0
-5,0.611338615417,0.134219408035,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0111489572556,0.0138824303326,0.0,0.0
-6,0.851913690567,0.126499970754,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)",,"{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0970756086929,0.012193751998,0.0,0.0
-7,0.847556034724,0.131823619207,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.10335805989,0.0059371237254,0.0,0.0
-8,0.933265288671,0.151074330012,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0922315931509,0.0170302241634,0.0,0.0
-9,0.541092634201,0.134328126907,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)",,"{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.019249769638,0.0168843820814,0.0,0.0
-10,0.555034001668,0.148054997126,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0153817865912,0.00507284297994,0.0,0.0
-11,0.624929666519,0.126802285512,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.100604714703,0.00480941497757,0.0,0.0
-12,0.760570367177,0.131281375885,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)",,"{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0644976284799,0.0220410546113,0.0,0.0
-13,0.87905160586,0.129822015762,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0243545970824,0.0140234081155,0.0,0.0
-14,0.75311867396,0.149591286977,1.0,1.0,False,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0918898745936,0.00545031738688,0.0,0.0
-15,3.76725935936,0.119556029638,1.0,1.0,False,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0)",,"{'model__normalize': False, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.179098559847,0.0186636665823,0.0,0.0
-16,4.31618873278,0.139646609624,1.0,1.0,False,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.334990508294,0.0107401769274,0.0,0.0
-17,4.10085805257,0.132832606634,1.0,1.0,False,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': False, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0797988358974,0.00291665157765,0.0,0.0
-18,4.56477808952,0.12678194046,1.0,1.0,False,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0)",,"{'model__normalize': False, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.304759868672,0.0180440150789,0.0,0.0
-19,4.69689098994,0.144922335943,1.0,1.0,False,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.545390172958,0.0154507597545,0.0,0.0
-20,4.6222217083,0.121864636739,1.0,1.0,False,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': False, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.44396322395,0.012151954361,0.0,0.0
-21,0.191917578379,0.108522017797,1.0,1.0,True,,,"{'model__normalize': True, 'pca': None, 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0455806716761,0.012388782542,0.0,0.0
-22,0.258583386739,0.117469708125,1.0,1.0,True,,"StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': None, 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0413106099776,0.0110455150779,0.0,0.0
-23,0.290825287501,0.117640018463,1.0,1.0,True,,"RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",4,0.57041241,0.568731318,0.581990163,0.553218056,0.536627819,0.57563375,0.252054488,0.009208074,0.019244368,0.009373534
+17,0.54106005,0.122704585,0.562607204,0.566226793,TRUE,,"RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
        with_scaling=True)","{'model__normalize': True, 'pca': None, 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0881447016495,0.0106416037436,0.0,0.0
-24,0.138249079386,0.122556686401,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)",,"{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.00328059316765,0.00621185233481,0.0,0.0
-25,0.177912314733,0.129823287328,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0163640742815,0.00560086945006,0.0,0.0
-26,0.174878756205,0.136451244354,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0185991990319,0.0105082783822,0.0,0.0
-27,0.180061340332,0.160869995753,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+       with_scaling=True)}",5,0.570563753,0.568996178,0.581990163,0.553445079,0.535265627,0.576239122,0.290639594,0.014270022,0.019887525,0.009509442
+1,0.464836041,0.116182327,0.562405408,0.566592567,FALSE,,"StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': None, 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",6,0.570109724,0.568693481,0.583881952,0.555980173,0.53322234,0.575104048,0.188197215,0.01173986,0.021387068,0.00794737
+6,1.512290001,0.112305721,0.560589244,0.56256923,FALSE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)",,"{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",7,0.568142263,0.561996292,0.58093076,0.552272125,0.532692599,0.573439274,0.279969065,0.013073154,0.020404418,0.008650943
+12,1.258217971,0.108834028,0.560589244,0.56256923,FALSE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)",,"{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': None}",7,0.568142263,0.561996292,0.58093076,0.552272125,0.532692599,0.573439274,0.119707595,0.009279928,0.020404418,0.008650943
+21,0.203267256,0.122245391,0.560589244,0.56256923,TRUE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
   svd_solver='auto', tol=0.0, whiten=False)",,"{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0303103890263,0.0495295185972,0.0,0.0
-28,0.22122502327,0.128039995829,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0330052778422,0.00698083069486,0.0,0.0
-29,0.210381984711,0.134712616603,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",7,0.568142263,0.561996292,0.58093076,0.552272125,0.532692599,0.573439274,0.034420477,0.022906523,0.020404418,0.008650943
+27,0.209026972,0.125152985,0.560589244,0.56256923,TRUE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)",,"{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': None}",7,0.568142263,0.561996292,0.58093076,0.552272125,0.532692599,0.573439274,0.067902535,0.013226748,0.020404418,0.008650943
+8,1.678915421,0.11941131,0.554384018,0.558281088,FALSE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",11,0.556867196,0.559953082,0.577147181,0.547542472,0.529135765,0.567347711,0.260948345,0.014962262,0.019678949,0.008171436
+23,0.284281095,0.133626382,0.554384018,0.558281088,TRUE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
   svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
        with_scaling=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
   svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.00436882717066,0.00182961777938,0.0,0.0
-30,0.139244000117,0.138428926468,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)",,"{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0437122866196,0.00901146290959,0.0,0.0
-31,0.181870063146,0.130019982656,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0252420789977,0.00973336122586,0.0,0.0
-32,0.167165279388,0.136598745982,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+       with_scaling=True)}",11,0.556867196,0.559953082,0.577147181,0.547542472,0.529135765,0.567347711,0.090609113,0.015747462,0.019678949,0.008171436
+14,1.730654955,0.120157083,0.554358793,0.55823064,FALSE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
   svd_solver='auto', tol=0.0, whiten=True)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+       with_scaling=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
   svd_solver='auto', tol=0.0, whiten=True), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0371605813947,0.00894766464473,0.0,0.0
-33,0.18795132637,0.125768899918,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)",,"{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0436773915782,0.0121118029091,0.0,0.0
-34,0.203187545141,0.132843732834,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
-  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0362714748733,0.00379872010585,0.0,0.0
-35,0.185654401779,0.158647378286,1.0,1.0,True,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+       with_scaling=True)}",13,0.556791525,0.559915245,0.577147181,0.547504635,0.529135765,0.567272039,0.131208972,0.013132601,0.019675798,0.00815745
+29,0.401242654,0.136243105,0.554358793,0.55823064,TRUE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
   svd_solver='auto', tol=0.0, whiten=True)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
        with_scaling=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
   svd_solver='auto', tol=0.0, whiten=True), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0218569897071,0.0223534650692,0.0,0.0
-36,0.154201030731,0.127418994904,1.0,1.0,True,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0)",,"{'model__normalize': True, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0325026480987,0.00946260870333,0.0,0.0
-37,0.204638560613,0.129277706146,1.0,1.0,True,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0435671237787,0.0112141803465,0.0,0.0
-38,0.171247959137,0.130711396535,1.0,1.0,True,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': True, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=None, step=1, verbose=0), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0249719420856,0.00733915772078,0.0,0.0
-39,0.134246985118,0.128149986267,1.0,1.0,True,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0)",,"{'model__normalize': True, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0), 'scale': None}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0370427739147,0.0176542074955,0.0,0.0
-40,0.173899332682,0.135511318843,1.0,1.0,True,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0271917028497,0.00846362291447,0.0,0.0
-41,0.156211694082,0.13246234258,1.0,1.0,True,"RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)","{'model__normalize': True, 'pca': RFE(estimator=LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False),
-  n_features_to_select=20, step=1, verbose=0), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
-       with_scaling=True)}",1,1.0,1.0,1.0,1.0,1.0,1.0,0.0181880104164,0.0305887717496,0.0,0.0
+       with_scaling=True)}",13,0.556791525,0.559915245,0.577147181,0.547504635,0.529135765,0.567272039,0.198548182,0.013606197,0.019675798,0.00815745
+7,1.524390618,0.115231911,0.550978711,0.555317193,FALSE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",15,0.555505108,0.55370994,0.575406735,0.546558704,0.522022098,0.565682936,0.176572625,0.005446673,0.022027826,0.007889719
+13,1.608332396,0.131861925,0.550978711,0.555342417,FALSE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",15,0.555505108,0.55370994,0.575406735,0.546558704,0.522022098,0.565758608,0.25762495,0.0157151,0.022027826,0.00792287
+22,0.334283431,0.128181616,0.550978711,0.555317193,TRUE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",15,0.555505108,0.55370994,0.575406735,0.546558704,0.522022098,0.565682936,0.077068139,0.007324372,0.022027826,0.007889719
+28,0.293176413,0.113461336,0.550978711,0.555342417,TRUE,"PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=40, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",15,0.555505108,0.55370994,0.575406735,0.546558704,0.522022098,0.565758608,0.07153391,0.009834062,0.022027826,0.00792287
+3,0.896627029,0.101455927,0.548960751,0.552025392,FALSE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)",,"{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",19,0.558834658,0.553596428,0.568444949,0.539748004,0.519600424,0.562731744,0.049785589,0.004997111,0.021127591,0.009448605
+9,1.072856029,0.105145613,0.548960751,0.552038004,FALSE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)",,"{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': None}",19,0.558834658,0.553596428,0.568444949,0.539748004,0.519600424,0.56276958,0.134155306,0.001276204,0.021127591,0.009462901
+18,0.227856636,0.128556728,0.548960751,0.552025392,TRUE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)",,"{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': None}",19,0.558834658,0.553596428,0.568444949,0.539748004,0.519600424,0.562731744,0.081165473,0.013667079,0.021127591,0.009448605
+24,0.244302352,0.100876013,0.548960751,0.552038004,TRUE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)",,"{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': None}",19,0.558834658,0.553596428,0.568444949,0.539748004,0.519600424,0.56276958,0.114888967,0.00675483,0.021127591,0.009462901
+11,1.044699669,0.11681064,0.540788013,0.54037163,FALSE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",23,0.553007946,0.537326422,0.559061672,0.529191419,0.510292114,0.554597049,0.134713735,0.004853757,0.021704212,0.010592969
+26,0.255072673,0.131738027,0.540788013,0.54037163,TRUE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",23,0.553007946,0.537326422,0.559061672,0.529191419,0.510292114,0.554597049,0.077079667,0.024588193,0.021704212,0.010592969
+5,1.116328398,0.107931296,0.540762789,0.540346406,FALSE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",25,0.552932274,0.537326422,0.559061672,0.529229256,0.510292114,0.554483541,0.096950051,0.00632621,0.021690035,0.010528848
+20,0.270610015,0.115089973,0.540762789,0.540346406,TRUE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': RobustScaler(copy=True, quantile_range=(25.0, 75.0), with_centering=True,
+       with_scaling=True)}",25,0.552932274,0.537326422,0.559061672,0.529229256,0.510292114,0.554483541,0.063803929,0.000812978,0.021690035,0.010528848
+4,0.975829999,0.11067605,0.540535768,0.542578795,FALSE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",27,0.550586455,0.542093912,0.56087779,0.530591396,0.51014076,0.555051078,0.125492974,0.00747998,0.021898532,0.009991508
+19,0.240373691,0.131017605,0.540535768,0.542578795,TRUE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",27,0.550586455,0.542093912,0.56087779,0.530591396,0.51014076,0.555051078,0.053384694,0.002803145,0.021898532,0.009991508
+10,0.909062068,0.120284239,0.540409646,0.542477893,FALSE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': False, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",29,0.550056754,0.541564191,0.560726447,0.530553559,0.510443469,0.555315929,0.143569946,0.007094165,0.0216316,0.01012982
+25,0.217244546,0.122421344,0.540409646,0.542477893,TRUE,"PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True)","StandardScaler(copy=True, with_mean=True, with_std=True)","{'model__normalize': True, 'pca': PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True), 'scale': StandardScaler(copy=True, with_mean=True, with_std=True)}",29,0.550056754,0.541564191,0.560726447,0.530553559,0.510443469,0.555315929,0.021792603,0.01006614,0.0216316,0.01012982
