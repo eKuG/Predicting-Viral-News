@@ -239,13 +239,14 @@ def NeuralNet(X, Y, grid):
 			'init': ['normal']
 	}
 	# define grid search and fit the values
-	estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=2)
-	estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=2)
+	estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=3)
+	estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=3)
 	estimator_NN1.fit(X.values, Y.values.ravel())
 	try:
 		print estimator_NN1.cv_results_
 	except Exception as e:
-		raise e
+		print e
+		raise Exception
 	best_df_NN1 = pandas.DataFrame.from_dict(estimator_NN1.cv_results_)
 	print best_df_NN1
 	estimator_NN2.fit(X.values, Y.values.ravel())
