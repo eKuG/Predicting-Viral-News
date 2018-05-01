@@ -18,6 +18,7 @@ import numpy
 import pandas
 import pickle
 import dill
+import itertools
 from sklearn.decomposition import PCA
 from sklearn.metrics import make_scorer
 from sklearn.feature_selection import RFE
@@ -60,7 +61,8 @@ def LinearRegression(X, Y, grid):
 					memory=cachedir)
 	# grid search parameters
 	grid = {'scale': [None, StandardScaler(), RobustScaler()],
-			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True), PCA(40, whiten=True)],
+			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
+			 PCA(40, whiten=True)],
 			'model__normalize': [False, True]
 	}
 	# define grid search and fit the values
@@ -174,7 +176,8 @@ def SVM(X, Y, grid):
 					memory=cachedir)
 	# grid search parameters
 	grid = {'scale': [None, StandardScaler(), RobustScaler()],
-			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True), PCA(40, whiten=True)],
+			'pca': [None, PCA(20), PCA(40), PCA(20, whiten=True),
+			 PCA(40, whiten=True)],
 			'model__kernel': ['rbf', 'linear', 'poly', 'sigmoid'],
 			'model__C': numpy.logspace(-4, 4, 5),
 			'model__gamma': numpy.logspace(-4, 4, 5)
@@ -198,11 +201,11 @@ def SVM(X, Y, grid):
 def NeuralNet(X, Y, grid):
 	"""Neural Network baseline."""
 	try:
-		import tensorflow as tf
-		gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
-		sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-		from keras import backend as K
-		K.set_session(sess)
+		# import tensorflow as tf
+		# gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
+		# sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+		# from keras import backend as K
+		# K.set_session(sess)
 		from keras.models import Sequential
 		from keras.layers import Dense
 		from keras.wrappers.scikit_learn import KerasClassifier
@@ -232,45 +235,83 @@ def NeuralNet(X, Y, grid):
 		model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 		return model
 
-	NN1_model = KerasClassifier(build_fn=NN1, verbose=0)
-	NN2_model = KerasClassifier(build_fn=NN2, verbose=0)
-	# grid search parameters
-	grid = {'optimizer': ['rmsprop', 'adam'],
-			'epochs': [50, 100, 150],
-			'batch_size': [5, 10, 20],
-			'init': ['glorot_uniform', 'normal', 'uniform']
-	}
-	grid = {'optimizer': ['adam'],
-			'init': ['normal']
-	}
-	# define grid search and fit the values
-	estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=3)
-	estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=3)
-	estimator_NN1.fit(X.values, Y.values.ravel())
-	try:
-		print estimator_NN1.cv_results_
-	except Exception as e:
-		print e
-		raise Exception
-	best_df_NN1 = pandas.DataFrame.from_dict(estimator_NN1.cv_results_)
-	print best_df_NN1
-	estimator_NN2.fit(X.values, Y.values.ravel())
-	best_df_NN2 = pandas.DataFrame.from_dict(estimator_NN2.cv_results_)
-	# store the results of grid search in CSV
-	best_df_NN1.to_csv('{0}/NN1.csv'.format(CSV_ROOT))
-	best_df_NN2.to_csv('{0}/NN2.csv'.format(CSV_ROOT))
-	# prepare variables for printing --> NN1
-	means_NN1 = 100 * estimator_NN1.cv_results_['mean_test_score']
-	stds_NN1 = 100 * estimator_NN1.cv_results_['std_test_score']
-	params_NN1 = estimator_NN1.cv_results_['params']
-	i_NN1 = estimator_NN1.best_index_
-	print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (means_NN1[i_NN1], stds_NN1[i_NN1], params_NN1[i_NN1]))
-	# prepare variables for printing --> NN2
-	means_NN2 = 100 * estimator_NN2.cv_results_['mean_test_score']
-	stds_NN2 = 100 * estimator_NN2.cv_results_['std_test_score']
-	params_NN2 = estimator_NN2.cv_results_['params']
-	i_NN2 = estimator_NN2.best_index_
-	print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (means_NN2[i_NN2], stds_NN2[i_NN2], params_NN2[i_NN2]))
-	print(DIVIDER)
+
+
+	S = StandardScaler().fit(X)
+	_X = S.transform(X)
+
+	optimizers = ['rmsprop', 'adam']
+	init = ['glorot_uniform', 'normal', 'uniform']
+	batch_size = [5, 10, 20]
+	epochs = [100]
+
+	for o, i, b, e in itertools.product(optimizers, init, batch_size, epochs):
+		print DIVIDER
+		print 'Optimizer:', o
+		print 'Initialization:', i
+		print 'Batch Size:', b
+		print 'Epochs:', e
+		N = NN2(optimizer=o, init=i)
+		N.fit(_X, Y, epochs=e, batch_size=b, validation_split=0.2)
+		scores = N.evaluate(_X, Y)
+		print("\n%s: %.2f%%" % (N.metrics_names[1], scores[1]*100))
+
+	for o, i, b, e in itertools.product(optimizers, init, batch_size, epochs):
+		print DIVIDER
+		print 'Optimizer:', o
+		print 'Initialization:', i
+		print 'Batch Size:', b
+		print 'Epochs:', e
+		N = NN1(optimizer=o, init=i)
+		N.fit(_X, Y, epochs=e, batch_size=b, validation_split=0.2)
+		scores = N.evaluate(_X, Y)
+		print("\n%s: %.2f%%" % (N.metrics_names[1], scores[1]*100))
+
+	# N = NN1()
+	# N.fit(_X, Y, epochs=20, batch_size=5, validation_split=0.2)
+	# scores = N.evaluate(_X, Y)
+	# print("\n%s: %.2f%%" % (N.metrics_names[1], scores[1]*100))
+	# N2 = NN2()
+	# N2.fit(_X, Y, epochs=20, batch_size=5)
+	# scores = N2.evaluate(_X, Y)
+	# print("\n%s: %.2f%%" % (N2.metrics_names[1], scores[1]*100))
+
+	# NN1_model = KerasClassifier(build_fn=NN1, verbose=0)
+	# kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=0)
+	# results = cross_val_score(NN1_model, X, Y, cv=kfold)
+	# print("Results: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
+	# NN2_model = KerasClassifier(build_fn=NN2, verbose=0)
+	# # grid search parameters
+	# grid = {'optimizer': ['rmsprop', 'adam'],
+	# 		'epochs': [50, 100, 150],
+	# 		'batch_size': [5, 10, 20],
+	# 		'init': ['glorot_uniform', 'normal', 'uniform']
+	# }
+	# grid = {'optimizer': ['adam'],
+	# 		'init': ['normal']
+	# }
+	# # define grid search and fit the values
+	# estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=3)
+	# estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=3)
+	# estimator_NN1.fit(X.values, Y.values.ravel())
+	# best_df_NN1 = pandas.DataFrame.from_dict(estimator_NN1.cv_results_)
+	# estimator_NN2.fit(X.values, Y.values.ravel())
+	# best_df_NN2 = pandas.DataFrame.from_dict(estimator_NN2.cv_results_)
+	# # store the results of grid search in CSV
+	# best_df_NN1.to_csv('{0}/NN1.csv'.format(CSV_ROOT))
+	# best_df_NN2.to_csv('{0}/NN2.csv'.format(CSV_ROOT))
+	# # prepare variables for printing --> NN1
+	# means_NN1 = 100 * estimator_NN1.cv_results_['mean_test_score']
+	# stds_NN1 = 100 * estimator_NN1.cv_results_['std_test_score']
+	# params_NN1 = estimator_NN1.cv_results_['params']
+	# i_NN1 = estimator_NN1.best_index_
+	# print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (means_NN1[i_NN1], stds_NN1[i_NN1], params_NN1[i_NN1]))
+	# # prepare variables for printing --> NN2
+	# means_NN2 = 100 * estimator_NN2.cv_results_['mean_test_score']
+	# stds_NN2 = 100 * estimator_NN2.cv_results_['std_test_score']
+	# params_NN2 = estimator_NN2.cv_results_['params']
+	# i_NN2 = estimator_NN2.best_index_
+	# print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (means_NN2[i_NN2], stds_NN2[i_NN2], params_NN2[i_NN2]))
+	# print(DIVIDER)
 
 
