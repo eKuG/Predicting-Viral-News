@@ -8,3 +8,4 @@
 [ParallelProgressBar(n_jobs=-1)]: Done 378 tasks      | elapsed:  2.4min
 [ParallelProgressBar(n_jobs=-1)]: Done 630 out of 630 | elapsed:  3.2min finished
 [ParallelProgressBar(n_jobs=-1)]: Done 128 tasks      | elapsed: 31.0min
+[ParallelProgressBar(n_jobs=-1)]: Done 378 tasks      | elapsed: 956.0min
