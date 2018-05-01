@@ -198,6 +198,11 @@ def SVM(X, Y, grid):
 def NeuralNet(X, Y, grid):
 	"""Neural Network baseline."""
 	try:
+		import tensorflow as tf
+		gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
+		sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+		from keras import backend as K
+		K.set_session(sess)
 		from keras.models import Sequential
 		from keras.layers import Dense
 		from keras.wrappers.scikit_learn import KerasClassifier
