@@ -242,7 +242,9 @@ def NeuralNet(X, Y, grid):
 	estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=2)
 	estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=2)
 	estimator_NN1.fit(X.values, Y.values.ravel())
+	print estimator_NN1.cv_results_
 	best_df_NN1 = pandas.DataFrame.from_dict(estimator_NN1.cv_results_)
+	print best_df_NN1
 	estimator_NN2.fit(X.values, Y.values.ravel())
 	best_df_NN2 = pandas.DataFrame.from_dict(estimator_NN2.cv_results_)
 	# store the results of grid search in CSV
