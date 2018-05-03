@@ -18,6 +18,8 @@ import numpy
 import pandas
 import pickle
 import dill
+import time
+import pprint
 import itertools
 from sklearn.decomposition import PCA
 from sklearn.metrics import make_scorer
@@ -33,12 +35,13 @@ from tempfile import mkdtemp
 from shutil import rmtree
 from os import system
 
-from data_utils import TrainTestSplit
+from data_utils import TrainTestSplit, NNTrainTestGraph
 
 RANDOM_STATE = 0
 VIS_ROOT = '../Visualizations'
 CSV_ROOT = '../Model_Results'
 DIVIDER = '================================================='
+PP = pprint.PrettyPrinter(indent=4)
 
 CLASS_CUTOFF = 1400
 
@@ -199,13 +202,11 @@ def SVM(X, Y, grid):
 	rmtree(cachedir)
 
 def NeuralNet(X, Y, grid):
-	"""Neural Network baseline."""
+	"""
+	Neural Network grid search.
+	Due to Tensorflow pickling issues, the grid search is done manually.
+	"""
 	try:
-		# import tensorflow as tf
-		# gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
-		# sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-		# from keras import backend as K
-		# K.set_session(sess)
 		from keras.models import Sequential
 		from keras.layers import Dense
 		from keras.wrappers.scikit_learn import KerasClassifier
@@ -214,104 +215,62 @@ def NeuralNet(X, Y, grid):
 
 	numpy.random.seed(RANDOM_STATE)
 
-	def NN1(optimizer='adam', init='normal'):
-		"""Baseline. Retain dimensionality."""
+	def NN_dynamic(optimizer='adam', loss='binary_crossentropy',
+				   num_hidden=1, hidden_layer_width=16, activation='relu'):
 		# create model
 		model = Sequential()
-		model.add(Dense(58, input_dim=58, kernel_initializer=init, activation='relu'))
-		model.add(Dense(1, kernel_initializer=init, activation='sigmoid'))
-		# Compile model
-		model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
+		model.add(Dense(hidden_layer_width, input_dim=58, kernel_initializer='normal', activation=activation))
+		for hidden in range(num_hidden):
+			model.add(Dense(hidden_layer_width, input_dim=hidden_layer_width,
+						    kernel_initializer='normal', activation=activation))
+		model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+		# Compile and return model
+		model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'])
 		return model
-
-	def NN2(optimizer='adam', init='normal'):
-		"""Reduction. Retain dimensionality then reduce dimensionality."""
-		# create model
-		model = Sequential()
-		model.add(Dense(58, input_dim=58, kernel_initializer=init, activation='relu'))
-		model.add(Dense(20, input_dim=58, kernel_initializer=init, activation='relu'))
-		model.add(Dense(1, kernel_initializer=init, activation='sigmoid'))
-		# Compile model
-		model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
-		return model
-
-
 
 	S = StandardScaler().fit(X)
 	_X = S.transform(X)
 
-	optimizers = ['rmsprop', 'adam']
-	init = ['glorot_uniform', 'normal', 'uniform']
-	batch_size = [5, 10, 20]
-	epochs = [100]
+	optimizers = ['adam', 'rmsprop']
+	losses = ['binary_crossentropy', 'mse']
+	activation = ['relu', 'tanh']
+	num_hidden = [1, 2, 3]
 
-	for o, i, b, e in itertools.product(optimizers, init, batch_size, epochs):
+	BATCH_SIZE = 512
+	EPOCHS = 25
+
+	X_train, X_val, Y_train, Y_val = TrainTestSplit(_X, Y)
+
+	val_len = len(X_train)
+
+	NN_config = {}
+	for index, o, l, a, n in enumerate(itertools.product(optimizers, losses, activation, num_hidden)):
 		print DIVIDER
-		print 'Optimizer:', o
-		print 'Initialization:', i
-		print 'Batch Size:', b
-		print 'Epochs:', e
-		N = NN2(optimizer=o, init=i)
-		N.fit(_X, Y, epochs=e, batch_size=b, validation_split=0.2)
-		scores = N.evaluate(_X, Y)
-		print("\n%s: %.2f%%" % (N.metrics_names[1], scores[1]*100))
+		grid_config = {
+			'optimizer': o,
+			'loss':, l,
+			'activation': a,
+			'num_hidden': n
+			'batch_size': BATCH_SIZE,
+			'epochs': EPOCHS
+		}
+		PP.pprint(grid_config)
+		N = NN_dynamic(optimizer=o, loss=l, num_hidden=n, hidden_layer_width=w, activation=a)
+		_time = time.time()
+		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, verbose=0)
+		NNTrainTestGraph(history, index)
+		NN_config['fit_time'] = time.time() - _time
+		val_scores = N.evaluate(X_val, Y_val)
+		NN_config['val_eval_time'] = time.time() - _time - NN_config['fit_time']
+		train_scores = N.evaluate(X_train, Y_train)
+		NN_config['train_eval_time'] = time.time() - _time - NN_config['fit_time'] - NN_config['val_eval_time']
+		print("\n%s: %.2f%%" % (N.metrics_names[1], val_scores[1]*100))
+		grid_config['val_score'] = val_scores[1]*100
+		grid_config['train_score'] = train_scores[1]*100
+		NN_config[index] = grid_config
+		print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (val_scores[1]*100, val_scores[0]*100, grid_config))
 
-	for o, i, b, e in itertools.product(optimizers, init, batch_size, epochs):
-		print DIVIDER
-		print 'Optimizer:', o
-		print 'Initialization:', i
-		print 'Batch Size:', b
-		print 'Epochs:', e
-		N = NN1(optimizer=o, init=i)
-		N.fit(_X, Y, epochs=e, batch_size=b, validation_split=0.2)
-		scores = N.evaluate(_X, Y)
-		print("\n%s: %.2f%%" % (N.metrics_names[1], scores[1]*100))
-
-	# N = NN1()
-	# N.fit(_X, Y, epochs=20, batch_size=5, validation_split=0.2)
-	# scores = N.evaluate(_X, Y)
-	# print("\n%s: %.2f%%" % (N.metrics_names[1], scores[1]*100))
-	# N2 = NN2()
-	# N2.fit(_X, Y, epochs=20, batch_size=5)
-	# scores = N2.evaluate(_X, Y)
-	# print("\n%s: %.2f%%" % (N2.metrics_names[1], scores[1]*100))
-
-	# NN1_model = KerasClassifier(build_fn=NN1, verbose=0)
-	# kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=0)
-	# results = cross_val_score(NN1_model, X, Y, cv=kfold)
-	# print("Results: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
-	# NN2_model = KerasClassifier(build_fn=NN2, verbose=0)
-	# # grid search parameters
-	# grid = {'optimizer': ['rmsprop', 'adam'],
-	# 		'epochs': [50, 100, 150],
-	# 		'batch_size': [5, 10, 20],
-	# 		'init': ['glorot_uniform', 'normal', 'uniform']
-	# }
-	# grid = {'optimizer': ['adam'],
-	# 		'init': ['normal']
-	# }
-	# # define grid search and fit the values
-	# estimator_NN1 = GridSearchCVProgressBar(NN1_model, grid, scoring='accuracy', n_jobs=-1, verbose=3)
-	# estimator_NN2 = GridSearchCVProgressBar(NN2_model, grid, scoring='accuracy', n_jobs=-1, verbose=3)
-	# estimator_NN1.fit(X.values, Y.values.ravel())
-	# best_df_NN1 = pandas.DataFrame.from_dict(estimator_NN1.cv_results_)
-	# estimator_NN2.fit(X.values, Y.values.ravel())
-	# best_df_NN2 = pandas.DataFrame.from_dict(estimator_NN2.cv_results_)
-	# # store the results of grid search in CSV
-	# best_df_NN1.to_csv('{0}/NN1.csv'.format(CSV_ROOT))
-	# best_df_NN2.to_csv('{0}/NN2.csv'.format(CSV_ROOT))
-	# # prepare variables for printing --> NN1
-	# means_NN1 = 100 * estimator_NN1.cv_results_['mean_test_score']
-	# stds_NN1 = 100 * estimator_NN1.cv_results_['std_test_score']
-	# params_NN1 = estimator_NN1.cv_results_['params']
-	# i_NN1 = estimator_NN1.best_index_
-	# print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (means_NN1[i_NN1], stds_NN1[i_NN1], params_NN1[i_NN1]))
-	# # prepare variables for printing --> NN2
-	# means_NN2 = 100 * estimator_NN2.cv_results_['mean_test_score']
-	# stds_NN2 = 100 * estimator_NN2.cv_results_['std_test_score']
-	# params_NN2 = estimator_NN2.cv_results_['params']
-	# i_NN2 = estimator_NN2.best_index_
-	# print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (means_NN2[i_NN2], stds_NN2[i_NN2], params_NN2[i_NN2]))
-	# print(DIVIDER)
+	NN_df = pandas.DataFrame.from_dict(NN_config, orient='index')
+	NN_df.to_csv('{0}/NN.csv'.format(CSV_ROOT))
 
 

@@ -6,6 +6,7 @@ Class: Data Mining | CSC 440
 Programmer: Gregory D. Hunkins 
 """
 import pandas
+import matplotlib.plt as plt
 from sklearn.model_selection import train_test_split
 
 FILEPATH = "../OnlineNewsPopularity/OnlineNewsPopularity.csv"
@@ -31,6 +32,28 @@ def BinaryY(Y):
 
 def TrainTestSplit(X, Y, R=0, test_size=0.2):
     return train_test_split(X, Y, test_size=test_size, random_state=R)
+
+def NNTrainTestGraph(history, index):
+    """Plot.
+    Reference: https://machinelearningmastery.com/display-deep-learning-model-training-history-in-keras/
+    """
+    # summarize history for accuracy
+    plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig('NN_{0}_acc.jpg'.format(index))
+    # summarize history for loss
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig('NN_{0}_loss.jpg'.format(index))
+
 
 
 
