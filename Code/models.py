@@ -242,6 +242,8 @@ def NeuralNet(X, Y, grid):
 
 	X_train, X_val, Y_train, Y_val = TrainTestSplit(_X, Y)
 
+	v_data = (X_val, Y_val)
+
 	val_len = len(X_train)
 
 	NN_config = {}
@@ -258,7 +260,7 @@ def NeuralNet(X, Y, grid):
 		PP.pprint(grid_config)
 		N = NN_dynamic(optimizer=o, loss=l, num_hidden=n, hidden_layer_width=w, activation=a)
 		_time = time.time()
-		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, verbose=1)
+		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_data=v_data, verbose=1)
 		NNTrainTestGraph(history, index)
 		NN_config['fit_time'] = time.time() - _time
 		val_scores = N.evaluate(X_val, Y_val)
