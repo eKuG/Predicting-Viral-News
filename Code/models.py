@@ -237,6 +237,7 @@ def NeuralNet(X, Y, grid):
 	activation = ['relu', 'tanh']
 	num_hidden = [1, 2, 3]
 	hidden_widths = [16, 32, 64]
+	batch_size = [64, 512]
 
 	BATCH_SIZE = 512
 	EPOCHS = 100
@@ -249,7 +250,8 @@ def NeuralNet(X, Y, grid):
 
 	NN_config = {}
 	scores = [0]
-	for index, (o, l, a, n, w) in enumerate(itertools.product(optimizers, losses, activation, num_hidden, hidden_widths)):
+	for index, (o, l, a, n, w, b) in enumerate(itertools.product(optimizers, losses, activation,
+																 num_hidden, hidden_widths, batch_size)):
 		print DIVIDER
 		grid_config = {
 			'optimizer': o,
@@ -257,14 +259,15 @@ def NeuralNet(X, Y, grid):
 			'activation': a,
 			'num_hidden': n,
 			'hidden_layer_width': w,
-			'batch_size': BATCH_SIZE,
-			'epochs': EPOCHS
+			'batch_size': b,
+			'max_epochs': EPOCHS
 		}
 		PP.pprint(grid_config)
 		N = NN_dynamic(optimizer=o, loss=l, num_hidden=n, hidden_layer_width=w, activation=a)
 		_time = time.time()
+		callbacks = [EarlyStopping(monitor='val_acc', patience=5, mode='max')]
 		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE,
-					    validation_data=v_data, verbose=1, callbacks=[EarlyStopping(patience=3)])
+					    validation_data=v_data, verbose=1, callbacks=callbacks)
 		NNTrainTestGraph(history, index)
 		NN_config['fit_time'] = time.time() - _time
 		val_scores = N.evaluate(X_val, Y_val)
@@ -280,6 +283,8 @@ def NeuralNet(X, Y, grid):
 		try:
 			if acc_pct > max(scores):
 				print('NEW MAX: {0}'.format(acc_pct))
+			else:
+				print ('MAX: {0}'.format(max(scores)))
 		except:
 			pass
 		scores.append(acc_pct)
