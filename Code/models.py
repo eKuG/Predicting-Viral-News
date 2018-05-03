@@ -209,6 +209,7 @@ def NeuralNet(X, Y, grid):
 	try:
 		from keras.models import Sequential
 		from keras.layers import Dense
+		from keras.callbacks import EarlyStopping
 		from keras.wrappers.scikit_learn import KerasClassifier
 	except Exception:
 		print('Keras import failed.')
@@ -225,7 +226,7 @@ def NeuralNet(X, Y, grid):
 						    kernel_initializer='normal', activation=activation))
 		model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
 		# Compile and return model
-		model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'])
+		model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'], callbacks=[EarlyStopping(patience=2)])
 		return model
 
 	S = StandardScaler().fit(X)
@@ -238,7 +239,7 @@ def NeuralNet(X, Y, grid):
 	hidden_widths = [16, 32, 64]
 
 	BATCH_SIZE = 512
-	EPOCHS = 25
+	EPOCHS = 100
 
 	X_train, X_val, Y_train, Y_val = TrainTestSplit(_X, Y)
 
@@ -247,6 +248,7 @@ def NeuralNet(X, Y, grid):
 	val_len = len(X_train)
 
 	NN_config = {}
+	scores = []
 	for index, (o, l, a, n, w) in enumerate(itertools.product(optimizers, losses, activation, num_hidden, hidden_widths)):
 		print DIVIDER
 		grid_config = {
@@ -254,6 +256,7 @@ def NeuralNet(X, Y, grid):
 			'loss': l,
 			'activation': a,
 			'num_hidden': n,
+			'hidden_layer_width': w,
 			'batch_size': BATCH_SIZE,
 			'epochs': EPOCHS
 		}
@@ -267,11 +270,15 @@ def NeuralNet(X, Y, grid):
 		NN_config['val_eval_time'] = time.time() - _time - NN_config['fit_time']
 		train_scores = N.evaluate(X_train, Y_train)
 		NN_config['train_eval_time'] = time.time() - _time - NN_config['fit_time'] - NN_config['val_eval_time']
-		print("\n%s: %.2f%%" % (N.metrics_names[1], val_scores[1]*100))
-		grid_config['val_score'] = val_scores[1]*100
+		acc_pct = val_scores[1]*100
+		print("\n%s: %.2f%%" % (N.metrics_names[1], acc_pct))
+		grid_config['val_score'] = acc_pct
 		grid_config['train_score'] = train_scores[1]*100
 		NN_config[index] = grid_config
-		print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (val_scores[1]*100, val_scores[0]*100, grid_config))
+		print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (acc_pct, val_scores[0]*100, grid_config))
+		if acc_pct > max(scores):
+			print('NEW MAX: {0}'.format(acc_pct))
+		scores.append(acc_pct)
 
 	NN_df = pandas.DataFrame.from_dict(NN_config, orient='index')
 	NN_df.to_csv('{0}/NN.csv'.format(CSV_ROOT))
