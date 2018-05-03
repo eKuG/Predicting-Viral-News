@@ -248,9 +248,9 @@ def NeuralNet(X, Y, grid):
 		print DIVIDER
 		grid_config = {
 			'optimizer': o,
-			'loss':, l,
+			'loss': l,
 			'activation': a,
-			'num_hidden': n
+			'num_hidden': n,
 			'batch_size': BATCH_SIZE,
 			'epochs': EPOCHS
 		}
