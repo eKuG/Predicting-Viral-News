@@ -226,7 +226,7 @@ def NeuralNet(X, Y, grid):
 						    kernel_initializer='normal', activation=activation))
 		model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
 		# Compile and return model
-		model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'], callbacks=[EarlyStopping(patience=2)])
+		model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'])
 		return model
 
 	S = StandardScaler().fit(X)
@@ -263,7 +263,8 @@ def NeuralNet(X, Y, grid):
 		PP.pprint(grid_config)
 		N = NN_dynamic(optimizer=o, loss=l, num_hidden=n, hidden_layer_width=w, activation=a)
 		_time = time.time()
-		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_data=v_data, verbose=1)
+		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE,
+					    validation_data=v_data, verbose=1, callbacks=[EarlyStopping(patience=2)])
 		NNTrainTestGraph(history, index)
 		NN_config['fit_time'] = time.time() - _time
 		val_scores = N.evaluate(X_val, Y_val)
