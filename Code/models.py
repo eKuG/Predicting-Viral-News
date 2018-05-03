@@ -235,6 +235,7 @@ def NeuralNet(X, Y, grid):
 	losses = ['binary_crossentropy', 'mse']
 	activation = ['relu', 'tanh']
 	num_hidden = [1, 2, 3]
+	hidden_widths = [16, 32, 64]
 
 	BATCH_SIZE = 512
 	EPOCHS = 25
@@ -244,7 +245,7 @@ def NeuralNet(X, Y, grid):
 	val_len = len(X_train)
 
 	NN_config = {}
-	for index, (o, l, a, n) in enumerate(itertools.product(optimizers, losses, activation, num_hidden)):
+	for index, (o, l, a, n, w) in enumerate(itertools.product(optimizers, losses, activation, num_hidden, hidden_widths)):
 		print DIVIDER
 		grid_config = {
 			'optimizer': o,
