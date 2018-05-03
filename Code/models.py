@@ -267,7 +267,7 @@ def NeuralNet(X, Y, grid):
 		_time = time.time()
 		callbacks = [EarlyStopping(monitor='val_acc', patience=5, mode='max')]
 		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE,
-					    validation_data=v_data, verbose=1, callbacks=callbacks)
+					    validation_data=v_data, verbose=0, callbacks=callbacks)
 		NNTrainTestGraph(history, index)
 		NN_config['fit_time'] = time.time() - _time
 		val_scores = N.evaluate(X_val, Y_val)
