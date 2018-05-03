@@ -248,7 +248,7 @@ def NeuralNet(X, Y, grid):
 	val_len = len(X_train)
 
 	NN_config = {}
-	scores = []
+	scores = [0]
 	for index, (o, l, a, n, w) in enumerate(itertools.product(optimizers, losses, activation, num_hidden, hidden_widths)):
 		print DIVIDER
 		grid_config = {
@@ -264,7 +264,7 @@ def NeuralNet(X, Y, grid):
 		N = NN_dynamic(optimizer=o, loss=l, num_hidden=n, hidden_layer_width=w, activation=a)
 		_time = time.time()
 		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE,
-					    validation_data=v_data, verbose=1, callbacks=[EarlyStopping(patience=2)])
+					    validation_data=v_data, verbose=1, callbacks=[EarlyStopping(patience=3)])
 		NNTrainTestGraph(history, index)
 		NN_config['fit_time'] = time.time() - _time
 		val_scores = N.evaluate(X_val, Y_val)
@@ -277,8 +277,11 @@ def NeuralNet(X, Y, grid):
 		grid_config['train_score'] = train_scores[1]*100
 		NN_config[index] = grid_config
 		print("NeuralNet Accuracy: %.2f%% (%.2f%%) with %r" % (acc_pct, val_scores[0]*100, grid_config))
-		if acc_pct > max(scores):
-			print('NEW MAX: {0}'.format(acc_pct))
+		try:
+			if acc_pct > max(scores):
+				print('NEW MAX: {0}'.format(acc_pct))
+		except:
+			pass
 		scores.append(acc_pct)
 
 	NN_df = pandas.DataFrame.from_dict(NN_config, orient='index')
