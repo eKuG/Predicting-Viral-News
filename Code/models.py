@@ -242,7 +242,7 @@ def NeuralNet(X, Y, grid):
 	BATCH_SIZE = 512
 	EPOCHS = 100
 
-	X_train, X_val, Y_train, Y_val = TrainTestSplit(_X, Y)
+	X_train, X_val, Y_train, Y_val = TrainTestSplit(_X, Y, test_size=0.33)
 
 	v_data = (X_val, Y_val)
 
