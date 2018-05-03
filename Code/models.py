@@ -244,7 +244,7 @@ def NeuralNet(X, Y, grid):
 	val_len = len(X_train)
 
 	NN_config = {}
-	for index, o, l, a, n in enumerate(itertools.product(optimizers, losses, activation, num_hidden)):
+	for index, (o, l, a, n) in enumerate(itertools.product(optimizers, losses, activation, num_hidden)):
 		print DIVIDER
 		grid_config = {
 			'optimizer': o,
