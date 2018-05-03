@@ -46,7 +46,7 @@ def NNTrainTestGraph(history, index):
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig('NN_{0}_acc.jpg'.format(index))
+    plt.savefig('NN_{0}_acc.png'.format(index))
     # summarize history for loss
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
@@ -54,7 +54,7 @@ def NNTrainTestGraph(history, index):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig('NN_{0}_loss.jpg'.format(index))
+    plt.savefig('NN_{0}_loss.png'.format(index))
 
 
 
