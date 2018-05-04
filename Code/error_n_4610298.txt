@@ -1,0 +1,25 @@
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/h5py/__init__.py:36: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  from ._conv import register_converters as _register_converters
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/h5py/__init__.py:45: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  from . import h5a, h5d, h5ds, h5f, h5fd, h5g, h5r, h5s, h5t, h5p, h5z
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/h5py/_hl/group.py:22: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  from .. import h5g, h5i, h5o, h5r, h5t, h5l, h5p
+Using TensorFlow backend.
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/pkgutil.py:186: ImportWarning: Not importing directory '/gpfs/fs2/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/google': missing __init__.py
+  file, filename, etc = imp.find_module(subname, path)
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/pkgutil.py:186: ImportWarning: Not importing directory '/gpfs/fs2/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/mpl_toolkits': missing __init__.py
+  file, filename, etc = imp.find_module(subname, path)
+Traceback (most recent call last):
+  File "neuralmain.py", line 25, in <module>
+    main(args.grid)
+  File "neuralmain.py", line 19, in main
+    NeuralNet(X, Y_binary, grid)
+  File "/gpfs/fs2/scratch/ghunkins/Predicting-Viral-News/Code/models.py", line 292, in NeuralNet
+    NN_df = pandas.DataFrame.from_dict(NN_config, orient='index')
+  File "/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/pandas/core/frame.py", line 845, in from_dict
+    data = _from_nested_dict(data)
+  File "/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/pandas/core/frame.py", line 5823, in _from_nested_dict
+    for col, v in compat.iteritems(s):
+  File "/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/pandas/compat/__init__.py", line 167, in iteritems
+    return obj.iteritems(**kw)
+AttributeError: 'float' object has no attribute 'iteritems'

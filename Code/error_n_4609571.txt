@@ -1,0 +1,14 @@
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/h5py/__init__.py:36: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  from ._conv import register_converters as _register_converters
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/h5py/__init__.py:45: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  from . import h5a, h5d, h5ds, h5f, h5fd, h5g, h5r, h5s, h5t, h5p, h5z
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/h5py/_hl/group.py:22: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  from .. import h5g, h5i, h5o, h5r, h5t, h5l, h5p
+Using TensorFlow backend.
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/pkgutil.py:186: ImportWarning: Not importing directory '/gpfs/fs2/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/google': missing __init__.py
+  file, filename, etc = imp.find_module(subname, path)
+/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/pkgutil.py:186: ImportWarning: Not importing directory '/gpfs/fs2/scratch/ghunkins/anaconda2/envs/VIRAL/lib/python2.7/site-packages/mpl_toolkits': missing __init__.py
+  file, filename, etc = imp.find_module(subname, path)
+slurmstepd: error: Job 4609571 exceeded memory limit (2101080 > 2097152), being killed
+slurmstepd: error: Exceeded job memory limit
+slurmstepd: error: *** JOB 4609571 ON bhg0015 CANCELLED AT 2018-05-03T19:13:33 ***
