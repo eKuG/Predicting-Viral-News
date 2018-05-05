@@ -424,8 +424,10 @@ def NeuralNet(X, Y, grid):
             hist_dict = {k: history.history[k][-1] for k in history.history}
             cvconfig = dict(cvconfig, **hist_dict)
             # save full history
+            os.chdir('history')
             with open('history_grid{0}_cv{1}.pickle'.format(index, i), 'wb') as file:
                 pickle.dump(history.history, file)
+            os.chdir('..')
             # save meta-history
             grid_config['val_acc_{0}'.format(i)] = cvconfig['val_acc']*100
             grid_config['train_acc_{0}'.format(i)] = cvconfig['acc']*100
