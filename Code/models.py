@@ -319,6 +319,8 @@ def NeuralNet(X, Y, grid):
     Due to Tensorflow pickling issues, the grid search is done manually.
     """
     try:
+        import tensorflow as tf
+        sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
         from keras.optimizers import Adam, SGD, RMSprop
         from keras.models import Sequential
         from keras.layers import Dense
