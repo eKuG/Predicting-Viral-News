@@ -328,143 +328,145 @@ def NeuralNet(X, Y, grid):
         from keras.layers import Dense
         from keras.callbacks import EarlyStopping
         from keras.wrappers.scikit_learn import KerasClassifier
+        print('Imports successful.')
     except Exception:
         print('Keras import failed.')
 
-    numpy.random.seed(RANDOM_STATE)
+    with tf.device('/gpu:0'):
+        numpy.random.seed(RANDOM_STATE)
 
-    optimizer_dropout = {
-        'sgd': SGD(lr=0.1, momentum=0.9, decay=1e-6),
-        'adam': Adam(lr=0.01, decay=1e-6),
-        'rmsprop': RMSprop(lr=0.01, decay=1e-6)
-    }
-
-    def NN_dynamic(optimizer='adam', loss='binary_crossentropy', dropout=False,
-                   hidden=(32), activation='relu'):
-        # optimizer if dropout
-        if dropout:
-            optimizer = optimizer_dropout[optimizer]
-        # create model
-        model = Sequential()
-        model.add(Dense(hidden[0], input_dim=58, kernel_initializer='normal', activation=activation))
-        for i, h in enumerate(hidden[1:-1]):
-            model.add(Dense(hidden[i+1], input_dim=h,
-                            kernel_initializer='normal', activation=activation))
-            if dropout:
-                model.add(Dropout(0.2))
-        model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
-        # Compile and return model
-        model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'])
-        return model
-
-    S = StandardScaler().fit(X)
-    _X = S.transform(X)
-
-    optimizers = ['adam', 'rmsprop', 'sgd']
-    losses = ['binary_crossentropy', 'mse']
-    activation = ['relu', 'tanh']
-    hidden = [[58],
-              [32],
-              [16],
-              [58, 58],
-              [58, 32],
-              [58, 16],
-              [32, 32],
-              [32, 16],
-              [16, 16],
-              [58, 58, 32],
-              [58, 58, 16],
-              [58, 32, 32],
-              [58, 32, 16],
-              [32, 32, 16],
-              [32, 16, 16],
-              [16, 16, 16]]
-    batch_size = [64, 512]
-    dropout = [True, False]
-
-    BATCH_SIZE = 512
-    EPOCHS = 100
-
-    # define 10-fold cross validation test harness
-    kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=RANDOM_STATE)
-    cvscores = []
-
-    # make history folder
-    if not os.path.isdir("./history"):
-        os.system('mkdir history')
-
-    NN_config = {}
-    scores = [0]
-    num_configs = len(list(itertools.product(optimizers, losses, activation,
-                                             hidden, dropout, batch_size)))
-    for index, (o, l, a, h, d, b) in enumerate(itertools.product(optimizers, losses, activation,
-                                                                 hidden, dropout, batch_size)):
-        grid_config = {
-            'optimizer': o,
-            'loss': l,
-            'activation': a,
-            'hidden': h,
-            'batch_size': b,
-            'dropout': d,
-            'max_epochs': EPOCHS
+        optimizer_dropout = {
+            'sgd': SGD(lr=0.1, momentum=0.9, decay=1e-6),
+            'adam': Adam(lr=0.01, decay=1e-6),
+            'rmsprop': RMSprop(lr=0.01, decay=1e-6)
         }
-        # print 
-        print DIVIDER
-        # get the dynamic neural net
-        N = NN_dynamic(optimizer=o, loss=l, hidden=h, activation=a)
-        # set callbacks
-        callbacks = [] if dropout else [EarlyStopping(monitor='val_acc', patience=10, mode='max')]
-        # initialize cv scores
+
+        def NN_dynamic(optimizer='adam', loss='binary_crossentropy', dropout=False,
+                       hidden=(32), activation='relu'):
+            # optimizer if dropout
+            if dropout:
+                optimizer = optimizer_dropout[optimizer]
+            # create model
+            model = Sequential()
+            model.add(Dense(hidden[0], input_dim=58, kernel_initializer='normal', activation=activation))
+            for i, h in enumerate(hidden[1:-1]):
+                model.add(Dense(hidden[i+1], input_dim=h,
+                                kernel_initializer='normal', activation=activation))
+                if dropout:
+                    model.add(Dropout(0.2))
+            model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+            # Compile and return model
+            model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'])
+            return model
+
+        S = StandardScaler().fit(X)
+        _X = S.transform(X)
+
+        optimizers = ['adam', 'rmsprop', 'sgd']
+        losses = ['binary_crossentropy', 'mse']
+        activation = ['relu', 'tanh']
+        hidden = [[58],
+                  [32],
+                  [16],
+                  [58, 58],
+                  [58, 32],
+                  [58, 16],
+                  [32, 32],
+                  [32, 16],
+                  [16, 16],
+                  [58, 58, 32],
+                  [58, 58, 16],
+                  [58, 32, 32],
+                  [58, 32, 16],
+                  [32, 32, 16],
+                  [32, 16, 16],
+                  [16, 16, 16]]
+        batch_size = [64, 512]
+        dropout = [True, False]
+
+        BATCH_SIZE = 512
+        EPOCHS = 100
+
+        # define 10-fold cross validation test harness
+        kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=RANDOM_STATE)
         cvscores = []
-        cvconfigs = []
-        for i, (train, test) in enumerate(kfold.split(_X, Y)):
-            # initialize
-            cvconfig = {}
-            _time = time.time()
-            v_data = (_X[test], Y.values[test].ravel())
-            # fit the data
-            history = N.fit(_X[train], Y.values[train].ravel(), epochs=EPOCHS, batch_size=BATCH_SIZE,
-                            validation_data=v_data, verbose=0, callbacks=callbacks)
-            hist_dict = {k: history.history[k][-1] for k in history.history}
-            cvconfig = dict(cvconfig, **hist_dict)
-            # save full history
-            os.chdir('history')
-            with open('history_grid{0}_cv{1}.pickle'.format(index, i), 'wb') as file:
-                pickle.dump(history.history, file)
-            os.chdir('..')
-            # save meta-history
-            grid_config['val_acc_{0}'.format(i)] = cvconfig['val_acc']*100
-            grid_config['train_acc_{0}'.format(i)] = cvconfig['acc']*100
-            # append config
-            cvconfigs.append(cvconfig)
 
-        # get average of cvscores, cvconfigs
-        N = float(len(cvconfigs))
-        cvconfig = {k: sum(c[k] for c in cvconfigs)/N for k in cvconfigs[0]}
-        # merge 
-        grid_config = dict(grid_config, **cvconfig)
-        # get acc pct
-        acc_pct = grid_config['val_acc'] * 100
-        tra_pcc = grid_config['acc'] * 100
-        # add dictionary to overall history
-        NN_config[index] = grid_config
-        print("Finished running {0} out of {1} configs.".format(index, num_configs))
-        print("NeuralNet Accuracy: %.2f%% (Train: %.2f%%)." % (acc_pct, tra_pcc))
-        PP.pprint(grid_config)
+        # make history folder
+        if not os.path.isdir("./history"):
+            os.system('mkdir history')
+
+        NN_config = {}
+        scores = [0]
+        num_configs = len(list(itertools.product(optimizers, losses, activation,
+                                                 hidden, dropout, batch_size)))
+        for index, (o, l, a, h, d, b) in enumerate(itertools.product(optimizers, losses, activation,
+                                                                     hidden, dropout, batch_size)):
+            grid_config = {
+                'optimizer': o,
+                'loss': l,
+                'activation': a,
+                'hidden': h,
+                'batch_size': b,
+                'dropout': d,
+                'max_epochs': EPOCHS
+            }
+            # print 
+            print DIVIDER
+            # get the dynamic neural net
+            N = NN_dynamic(optimizer=o, loss=l, hidden=h, activation=a)
+            # set callbacks
+            callbacks = [] if dropout else [EarlyStopping(monitor='val_acc', patience=10, mode='max')]
+            # initialize cv scores
+            cvscores = []
+            cvconfigs = []
+            for i, (train, test) in enumerate(kfold.split(_X, Y)):
+                # initialize
+                cvconfig = {}
+                _time = time.time()
+                v_data = (_X[test], Y.values[test].ravel())
+                # fit the data
+                history = N.fit(_X[train], Y.values[train].ravel(), epochs=EPOCHS, batch_size=BATCH_SIZE,
+                                validation_data=v_data, verbose=0, callbacks=callbacks)
+                hist_dict = {k: history.history[k][-1] for k in history.history}
+                cvconfig = dict(cvconfig, **hist_dict)
+                # save full history
+                os.chdir('history')
+                with open('history_grid{0}_cv{1}.pickle'.format(index, i), 'wb') as file:
+                    pickle.dump(history.history, file)
+                os.chdir('..')
+                # save meta-history
+                grid_config['val_acc_{0}'.format(i)] = cvconfig['val_acc']*100
+                grid_config['train_acc_{0}'.format(i)] = cvconfig['acc']*100
+                # append config
+                cvconfigs.append(cvconfig)
+
+            # get average of cvscores, cvconfigs
+            N = float(len(cvconfigs))
+            cvconfig = {k: sum(c[k] for c in cvconfigs)/N for k in cvconfigs[0]}
+            # merge 
+            grid_config = dict(grid_config, **cvconfig)
+            # get acc pct
+            acc_pct = grid_config['val_acc'] * 100
+            tra_pcc = grid_config['acc'] * 100
+            # add dictionary to overall history
+            NN_config[index] = grid_config
+            print("Finished running {0} out of {1} configs.".format(index, num_configs))
+            print("NeuralNet Accuracy: %.2f%% (Train: %.2f%%)." % (acc_pct, tra_pcc))
+            PP.pprint(grid_config)
+            try:
+                if acc_pct > max(scores):
+                    print('NEW MAX: {0}'.format(acc_pct))
+                else:
+                    print ('MAX: {0}'.format(max(scores)))
+            except:
+                pass
+            scores.append(acc_pct)
+
         try:
-            if acc_pct > max(scores):
-                print('NEW MAX: {0}'.format(acc_pct))
-            else:
-                print ('MAX: {0}'.format(max(scores)))
-        except:
-            pass
-        scores.append(acc_pct)
-
-    try:
-        NN_df = pandas.DataFrame.from_dict(NN_config, orient='index')
-        NN_df.to_csv('{0}/NN.csv'.format(CSV_ROOT))
-    except Exception:
-        with open('{0}/NN.txt'.format(CSV_ROOT), 'w') as file:
-            file.write(pickle.dumps(NN_config))
+            NN_df = pandas.DataFrame.from_dict(NN_config, orient='index')
+            NN_df.to_csv('{0}/NN.csv'.format(CSV_ROOT))
+        except Exception:
+            with open('{0}/NN.txt'.format(CSV_ROOT), 'w') as file:
+                file.write(pickle.dumps(NN_config))
 
 
