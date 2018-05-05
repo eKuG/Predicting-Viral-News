@@ -321,6 +321,8 @@ def NeuralNet(X, Y, grid):
     try:
         import tensorflow as tf
         sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+        from tensorflow.python.client import device_lib
+        print(device_lib.list_local_devices())
         from keras.optimizers import Adam, SGD, RMSprop
         from keras.models import Sequential
         from keras.layers import Dense
