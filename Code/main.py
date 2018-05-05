@@ -9,13 +9,20 @@ import os
 import argparse
 from data_utils import read_clean_data, BinaryY
 from models import (LinearRegression, LogisticRegression, 
-					DecisionTree, SVM, NeuralNet)
+					DecisionTree, SVM, NeuralNet,
+					Bagging, RandomForest)
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 
 def main(grid):
 	# Get Clean Data
 	X, Y = read_clean_data()
+	Y_binary = BinaryY(Y)
+	# Random Forest
+	RandomForest(X, Y_binary, grid)
+	# Bagging Classifier
+	Bagging(X, Y_binary, grid)
+	return
 	# Linear Regression
 	try:
 		LinearRegression(X, Y, grid)

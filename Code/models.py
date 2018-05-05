@@ -22,6 +22,9 @@ import time
 import pprint
 import itertools
 from sklearn.decomposition import PCA
+from sklearn.ensemble import (RandomForestClassifier,
+							  BaggingClassifier,
+							  AdaBoostClassifier)
 from sklearn.metrics import make_scorer
 from sklearn.feature_selection import RFE
 from sklearn.model_selection import cross_val_score, GridSearchCV
@@ -201,12 +204,121 @@ def SVM(X, Y, grid):
 	# remove cache
 	rmtree(cachedir)
 
+def RandomForest(X, Y, grid):
+	print(DIVIDER)
+	# define model
+	mRF = RandomForestClassifier(random_state=RANDOM_STATE)
+	# create cache
+	cachedir = mkdtemp()
+	# set-up pipeline: normalize, reduce components, model
+	pipe = Pipeline(steps=[('scale', None),
+						   ('pca', None),
+						   ('model', mRF)],
+					memory=cachedir)
+	# grid search parameters
+	grid = {#'scale': [None, StandardScaler()],
+			#'pca': [None, PCA(20), PCA(40)],
+			'scale': [None, StandardScaler()],
+			'pca': [None, PCA(40)],
+			'model__n_estimators': [10],
+			'model__criterion': ['gini', 'entropy'],
+			'model__max_depth': [None, 5, 10]
+	}
+	# define grid search and fit the values
+	estimator = GridSearchCVProgressBar(pipe, grid, scoring='accuracy', n_jobs=-1, verbose=1)
+	estimator.fit(X.values, Y.values.ravel())
+	# store the results of grid search in CSV
+	best_df = pandas.DataFrame.from_dict(estimator.cv_results_)
+	best_df.to_csv('{0}/random_forest.csv'.format(CSV_ROOT))
+	# prepare variables for printing
+	means = 100 * estimator.cv_results_['mean_test_score']
+	stds = 100 * estimator.cv_results_['std_test_score']
+	params = estimator.cv_results_['params']
+	i = estimator.best_index_
+	print("Decision Tree Best Results: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
+	print(DIVIDER)
+	# remove cache
+	rmtree(cachedir)
+
+
+def Bagging(X, Y, grid):
+	print(DIVIDER)
+	# define model
+	mBag = BaggingClassifier()
+	# create cache
+	cachedir = mkdtemp()
+	# set-up pipeline: normalize, reduce components, model
+	pipe = Pipeline(steps=[('scale', None),
+						   ('pca', None),
+						   ('model', mBag)],
+					memory=cachedir)
+	# grid search parameters
+	grid = {'scale': [None, StandardScaler()],
+			'pca': [None, PCA(40)],
+			'model__base_estimator': [DecisionTreeClassifier(max_depth=5)],
+									  #linear_model.LogisticRegression(penalty='l1'),
+									  #svm.SVC()],
+			'model__n_estimators': [10, 20],
+	}
+	# define grid search and fit the values
+	estimator = GridSearchCVProgressBar(pipe, grid, scoring='accuracy', n_jobs=-1, verbose=2)
+	estimator.fit(X.values, Y.values.ravel())
+	# store the results of grid search in CSV
+	best_df = pandas.DataFrame.from_dict(estimator.cv_results_)
+	best_df.to_csv('{0}/bagging.csv'.format(CSV_ROOT))
+	# prepare variables for printing
+	means = 100 * estimator.cv_results_['mean_test_score']
+	stds = 100 * estimator.cv_results_['std_test_score']
+	params = estimator.cv_results_['params']
+	i = estimator.best_index_
+	print("Bagging Best Results: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
+	print(DIVIDER)
+	# remove cache
+	rmtree(cachedir)
+
+def Boost(X, Y, grid):
+	print(DIVIDER)
+	# define model
+	mBoost = AdaBoostClassifier()
+	# create cache
+	cachedir = mkdtemp()
+	# set-up pipeline: normalize, reduce components, model
+	pipe = Pipeline(steps=[('scale', None),
+						   ('pca', None),
+						   ('model', mBag)],
+					memory=cachedir)
+	# grid search parameters
+	grid = {'scale': [None, StandardScaler()],
+			'pca': [None, PCA(40)],
+			'model__base_estimator': [DecisionTreeClassifier(max_depth=5)],
+									  #linear_model.LogisticRegression(penalty='l1'),
+									  #svm.SVC()],
+			'model__n_estimators': [10, 20],
+	}
+	# define grid search and fit the values
+	estimator = GridSearchCVProgressBar(pipe, grid, scoring='accuracy', n_jobs=-1, verbose=2)
+	estimator.fit(X.values, Y.values.ravel())
+	# store the results of grid search in CSV
+	best_df = pandas.DataFrame.from_dict(estimator.cv_results_)
+	best_df.to_csv('{0}/bagging.csv'.format(CSV_ROOT))
+	# prepare variables for printing
+	means = 100 * estimator.cv_results_['mean_test_score']
+	stds = 100 * estimator.cv_results_['std_test_score']
+	params = estimator.cv_results_['params']
+	i = estimator.best_index_
+	print("Bagging Best Results: %.2f%% (%.2f%%) with %r" % (means[i], stds[i], params[i]))
+	print(DIVIDER)
+	# remove cache
+	rmtree(cachedir)
+
+
 def NeuralNet(X, Y, grid):
 	"""
 	Neural Network grid search.
 	Due to Tensorflow pickling issues, the grid search is done manually.
 	"""
 	try:
+		from keras.optimizers import adam, SGD, RMSprop
 		from keras.models import Sequential
 		from keras.layers import Dense
 		from keras.callbacks import EarlyStopping
@@ -216,14 +328,25 @@ def NeuralNet(X, Y, grid):
 
 	numpy.random.seed(RANDOM_STATE)
 
-	def NN_dynamic(optimizer='adam', loss='binary_crossentropy',
+	optimizer_dropout = {
+		'sgd': SGD(lr=0.1, momentum=0.9),
+		'adam': Adam(lr=0.01),
+		'rmsprop': RMSprop(lr=0.01)
+	}
+
+	def NN_dynamic(optimizer='adam', loss='binary_crossentropy', dropout=False,
 				   num_hidden=1, hidden_layer_width=16, activation='relu'):
+		# optimizer if dropout
+		if dropout:
+			optimizer = optimizer_dropout[optimizer]
 		# create model
 		model = Sequential()
 		model.add(Dense(hidden_layer_width, input_dim=58, kernel_initializer='normal', activation=activation))
 		for hidden in range(num_hidden):
 			model.add(Dense(hidden_layer_width, input_dim=hidden_layer_width,
 						    kernel_initializer='normal', activation=activation))
+			if dropout:
+				model.add(Dropout(0.2))
 		model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
 		# Compile and return model
 		model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'])
@@ -232,12 +355,13 @@ def NeuralNet(X, Y, grid):
 	S = StandardScaler().fit(X)
 	_X = S.transform(X)
 
-	optimizers = ['adam', 'rmsprop']
+	optimizers = ['adam', 'rmsprop', 'sgd']
 	losses = ['binary_crossentropy', 'mse']
 	activation = ['relu', 'tanh']
-	num_hidden = [1, 2, 3]
-	hidden_widths = [16, 32, 64]
+	num_hidden = [0, 1, 2, 3, 4]
+	hidden_widths = [16, 32, 58]
 	batch_size = [64, 512]
+	dropout = [True, False]
 
 	BATCH_SIZE = 512
 	EPOCHS = 100
@@ -265,7 +389,7 @@ def NeuralNet(X, Y, grid):
 		PP.pprint(grid_config)
 		N = NN_dynamic(optimizer=o, loss=l, num_hidden=n, hidden_layer_width=w, activation=a)
 		_time = time.time()
-		callbacks = [EarlyStopping(monitor='val_acc', patience=5, mode='max')]
+		callbacks = [EarlyStopping(monitor='val_acc', patience=10, mode='max')]
 		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE,
 					    validation_data=v_data, verbose=0, callbacks=callbacks)
 		NNTrainTestGraph(history, index)
@@ -288,8 +412,11 @@ def NeuralNet(X, Y, grid):
 		except:
 			pass
 		scores.append(acc_pct)
-
-	NN_df = pandas.DataFrame.from_dict(NN_config, orient='index')
-	NN_df.to_csv('{0}/NN.csv'.format(CSV_ROOT))
+	try:
+		NN_df = pandas.DataFrame.from_dict(NN_config, orient='index')
+		NN_df.to_csv('{0}/NN.csv'.format(CSV_ROOT))
+	except Exception:
+		with open('{0}/NN.txt'.format(CSV_ROOT), 'w') as file:
+			file.write(pickle.dumps(NN_config))
 
 

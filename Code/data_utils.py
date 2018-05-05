@@ -6,8 +6,10 @@ Class: Data Mining | CSC 440
 Programmer: Gregory D. Hunkins 
 """
 import pandas
-import matplotlib
-matplotlib.use('Agg')
+import os
+if os.path.expanduser('.') == '/scratch/ghunkins/Predicting-Viral-News/Code':
+    import matplotlib
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
