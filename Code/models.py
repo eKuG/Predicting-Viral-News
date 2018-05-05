@@ -374,8 +374,8 @@ def NeuralNet(X, Y, grid):
 
 	NN_config = {}
 	scores = [0]
-	for index, (o, l, a, n, w, b) in enumerate(itertools.product(optimizers, losses, activation,
-																 num_hidden, hidden_widths, batch_size)):
+	for index, (o, l, a, d, n, w, b) in enumerate(itertools.product(optimizers, losses, activation, dropout,
+																    num_hidden, hidden_widths, batch_size)):
 		print DIVIDER
 		grid_config = {
 			'optimizer': o,
@@ -384,12 +384,13 @@ def NeuralNet(X, Y, grid):
 			'num_hidden': n,
 			'hidden_layer_width': w,
 			'batch_size': b,
+			'dropout': d,
 			'max_epochs': EPOCHS
 		}
 		PP.pprint(grid_config)
 		N = NN_dynamic(optimizer=o, loss=l, num_hidden=n, hidden_layer_width=w, activation=a)
 		_time = time.time()
-		callbacks = [EarlyStopping(monitor='val_acc', patience=10, mode='max')]
+		callbacks = [] if dropout else [EarlyStopping(monitor='val_acc', patience=10, mode='max')]
 		history = N.fit(X_train, Y_train, epochs=EPOCHS, batch_size=BATCH_SIZE,
 					    validation_data=v_data, verbose=0, callbacks=callbacks)
 		NNTrainTestGraph(history, index)
