@@ -329,9 +329,9 @@ def NeuralNet(X, Y, grid):
 	numpy.random.seed(RANDOM_STATE)
 
 	optimizer_dropout = {
-		'sgd': SGD(lr=0.1, momentum=0.9),
-		'adam': Adam(lr=0.01),
-		'rmsprop': RMSprop(lr=0.01)
+		'sgd': SGD(lr=0.1, momentum=0.9, decay=1e-6),
+		'adam': Adam(lr=0.01, decay=1e-6),
+		'rmsprop': RMSprop(lr=0.01, decay=1e-6)
 	}
 
 	def NN_dynamic(optimizer='adam', loss='binary_crossentropy', dropout=False,
