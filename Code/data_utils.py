@@ -7,7 +7,7 @@ Programmer: Gregory D. Hunkins
 """
 import pandas
 import os
-if os.path.expanduser('.') == '/scratch/ghunkins/Predicting-Viral-News/Code':
+if 'scratch' in os.path.abspath('.'):
     import matplotlib
     matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -38,7 +38,8 @@ def TrainTestSplit(X, Y, R=0, test_size=0.2):
     return train_test_split(X, Y, test_size=test_size, random_state=R)
 
 def NNTrainTestGraph(history, index):
-    """Plot.
+    """
+    Plot.
     Reference: https://machinelearningmastery.com/display-deep-learning-model-training-history-in-keras/
     """
     # summarize history for accuracy
