@@ -336,7 +336,7 @@ def NeuralNet(X, Y, grid):
         numpy.random.seed(RANDOM_STATE)
 
         optimizer_dropout = {
-            'sgd': SGD(lr=0.1, momentum=0.9, decay=1e-6),
+            'sgd': SGD(lr=0.1, momen tum=0.9, decay=1e-6),
             'adam': Adam(lr=0.01, decay=1e-6),
             'rmsprop': RMSprop(lr=0.01, decay=1e-6)
         }
