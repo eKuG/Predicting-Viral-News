@@ -1,8 +1,10 @@
 # :fire: Predicting-Viral-News :fire:
 
-Investigation in `Python` of predicting the virality of a news article based on its meta-data. Uses the [UCI dataset](https://archive.ics.uci.edu/ml/datasets/online+news+popularity) from the paper below.
+Investigation in `Python` of predicting the virality of a news article based on its meta-data. Uses the [UCI dataset](https://archive.ics.uci.edu/ml/datasets/online+news+popularity) from the paper below. A top accuracy of **67%** is achieved via a **Neural Network** which is a competitive result (original paper baseline: 67%, current state-of-the-art: 69%).
 
 `K. Fernandes, P. Vinagre and P. Cortez. A Proactive Intelligent Decision Support System for Predicting the Popularity of Online News. Proceedings of the 17th EPIA 2015 - Portuguese Conference on Artificial Intelligence, September, Coimbra, Portugal.`
+
+The full report can be viewed [**here**](https://github.com/ghunkins/Predicting-Viral-News/blob/master/Online_News_Popularity_Hunkins.pdf).
 
 ## Running the Code
 
@@ -25,45 +27,34 @@ If you need help getting started with `Anaconda`: [Getting Started With Anaconda
 
 #### Run :running:
 
-To run the best parameters simply run:
+Navigate into the `Code` directory.
 
-`python Code/main.py`
+To run the full grid search, run:
 
-To re-run the grid search, run:
+`python main.py`
 
-`python Code/main.py --grid`
+## Correlation Matrix
 
-## Models
+Correlation matrix computed via Pearson's coefficient is shown below. 
 
-### Linear Regression
+<img src="https://raw.githubusercontent.com/ghunkins/Predicting-Viral-News/master/Visualizations/correlation.png" alt="baseline">
 
-`Cross-Validation Accuracy:` **X.XX%**
+## Results
 
-`Best Parameters:`
+Below is a table summary of the results. **Bolded** values represented best-in-class results for the experiments provided. 
 
-### Logistic Regression
+<img src="https://raw.githubusercontent.com/ghunkins/Predicting-Viral-News/master/Visualizations/results.png" alt="baseline">
 
-`Cross-Validation Accuracy:` **X.XX%**
+## Model Grid Search Summary
 
-`Best Parameters:`
+Below is a table summary of the results. **Bolded** values represented best-in-class results for the experiments provided. 
 
-### Decision Tree
 
-`Cross-Validation Accuracy:` **X.XX%**
+<img src="https://raw.githubusercontent.com/ghunkins/Predicting-Viral-News/master/Visualizations/crossvalid.png" alt="baseline">
 
-`Best Parameters:`
 
-### Support Vector Machine
 
-`Cross-Validation Accuracy:` **X.XX%**
 
-`Best Parameters:`
-
-### Neural Network
-
-`Cross-Validation Accuracy:` **X.XX%**
-
-`Best Parameters:`
 
 
 
