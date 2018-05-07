@@ -17,17 +17,12 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 def main(grid):
 	# Get Clean Data
 	X, Y = read_clean_data()
-	Y_binary = BinaryY(Y)
-	# Random Forest
-	RandomForest(X, Y_binary, grid)
-	# Bagging Classifier
-	Bagging(X, Y_binary, grid)
-	return
 	# Linear Regression
 	try:
 		LinearRegression(X, Y, grid)
 	except Exception as e:
 		print e
+	# Binarize Y
 	Y_binary = BinaryY(Y)
 	# Logistic Regression
 	try:
@@ -44,7 +39,22 @@ def main(grid):
 		SVM(X, Y_binary, grid)
 	except Exception as e:
 		print e
-	#NeuralNet(X, Y_binary, grid)
+	# Random Forest
+	try:
+		RandomForest(X, Y_binary, grid)
+	except Exception as e:
+		print e
+	# Bagging Classifier
+	try:
+		Bagging(X, Y_binary, grid)
+	except Exception as e:
+		print e
+	# Neural Network
+	try:
+		NeuralNet(X, Y_binary, grid)
+	except Exception as e:
+		print e
+
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
